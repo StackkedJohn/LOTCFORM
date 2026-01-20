@@ -1,5 +1,12 @@
 # Vercel Deployment Guide
 
+## Architecture
+
+This application uses Vercel's serverless architecture:
+- **Frontend**: `index.html` served as a static file
+- **Backend**: `api/submit.js` runs as a serverless function
+- **Database**: Neon CRM API integration + local JSON backups in `/tmp`
+
 ## Quick Deploy
 
 1. **Import to Vercel**
@@ -49,9 +56,11 @@
 
 ## Important Notes
 
-- **Submissions Folder**: The `/submissions` directory is committed to Git. This is intentional for backup purposes.
-- **Environment Variables**: Never commit `.env` file. Always use Vercel's environment variable settings.
-- **Neon CRM**: Ensure API credentials are valid and have proper permissions.
+- **Serverless Architecture**: Vercel uses serverless functions, not a persistent Express server
+- **Submissions Storage**: On Vercel, submissions are saved to `/tmp` (temporary). For production, consider using a database or external storage
+- **Local Development**: Use `npm start` to run `server.js` locally with persistent file storage
+- **Environment Variables**: Never commit `.env` file. Always use Vercel's environment variable settings
+- **Neon CRM**: Ensure API credentials are valid and have proper permissions
 
 ## Monitoring
 

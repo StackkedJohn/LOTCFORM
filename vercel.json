@@ -2,18 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "api/submit.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/submit",
-      "dest": "server.js"
+      "dest": "/api/submit.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server.js"
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "/index.html"
     }
   ],
   "env": {
