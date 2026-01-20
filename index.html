@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Least of These Carolinas Request Form</title>
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Brand Colors from LOTC Guidelines */
+        :root {
+            --brand-red: #c22035;
+            --brand-blue: #86b2d3;
+            --brand-grey: #a7a8a3;
+            --brand-black: #060511;
+            --brand-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--brand-blue);
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: var(--brand-black);
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: var(--brand-white);
+            padding: 30px 40px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(6, 5, 17, 0.1);
+        }
+
+        .header-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brand-red);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--brand-black);
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background: var(--brand-white);
+            border-radius: 0 0 12px 12px;
+            padding: 30px 40px;
+            box-shadow: 0 4px 6px rgba(6, 5, 17, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: var(--brand-red);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 2fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.two-col {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-row.three-equal {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            color: var(--brand-black);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: " *";
+            color: var(--brand-red);
+        }
+
+        .helper-text {
+            color: var(--brand-grey);
+            font-size: 0.9em;
+            font-weight: 400;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background-color: var(--brand-white);
+            color: var(--brand-black);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--brand-red);
+            box-shadow: 0 0 0 4px rgba(194, 32, 53, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Readonly fields styling */
+        input[readonly],
+        select[readonly],
+        textarea[readonly] {
+            background-color: #f3f4f6;
+            color: #6b7280;
+            cursor: not-allowed;
+            border-color: #d1d5db;
+        }
+
+        input[readonly]:focus,
+        select[readonly]:focus,
+        textarea[readonly]:focus {
+            box-shadow: none;
+            border-color: #d1d5db;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 400;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            cursor: pointer;
+            accent-color: var(--brand-red);
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 16px;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--brand-red);
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: var(--brand-black);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .checkbox-label a {
+            color: var(--brand-red);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px 32px;
+            background-color: var(--brand-red);
+            color: var(--brand-white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background-color: #a01929;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(194, 32, 53, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background-color: var(--brand-grey);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error {
+            color: var(--brand-red);
+            font-size: 0.875rem;
+            margin-top: 6px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .message {
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 2px solid var(--brand-red);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Tablet breakpoint */
+        @media (max-width: 992px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+
+        /* Mobile breakpoint */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .header {
+                padding: 20px 16px;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .header-logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+                margin-bottom: 16px;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .form-container {
+                padding: 24px 16px;
+                border-radius: 0 0 8px 8px;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+                margin-bottom: 16px;
+            }
+
+            .form-section {
+                margin-bottom: 24px;
+                padding-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 14px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                margin-bottom: 14px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .submit-btn {
+                padding: 16px 24px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPCEtLSBSZWQgQ2lyY2xlIEJhY2tncm91bmQgLS0+CiAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI4NSIgZmlsbD0iI2MyMjAzNSIvPgoKICA8IS0tIFdoaXRlIHNpbGhvdWV0dGVzIG9mIGNoaWxkcmVuIChzaW1wbGlmaWVkIHJlcHJlc2VudGF0aW9ucykgLS0+CiAgPCEtLSBDaGlsZCAxIC0gbGVmdCwgcnVubmluZyAtLT4KICA8ZyBmaWxsPSJ3aGl0ZSI+CiAgICA8ZWxsaXBzZSBjeD0iNjUiIGN5PSI4NSIgcng9IjgiIHJ5PSIxMCIvPgogICAgPHBhdGggZD0iTSA2NSA5NSBMIDYwIDExMCBMIDU1IDEzMCBNIDY1IDk1IEwgNzAgMTEwIEwgNzUgMTMwIi8+CiAgICA8cGF0aCBkPSJNIDY1IDk1IEwgNjIgMTA1IEwgNTggMTE4IE0gNjUgOTUgTCA2OCAxMDUgTCA3MiAxMTgiLz4KICAgIDxlbGxpcHNlIGN4PSI2NSIgY3k9Ijc1IiByeD0iNyIgcnk9IjgiLz4KICA8L2c+CgogIDwhLS0gQ2hpbGQgMiAtIGNlbnRlciwganVtcGluZyAtLT4KICA8ZyBmaWxsPSJ3aGl0ZSI+CiAgICA8ZWxsaXBzZSBjeD0iMTAwIiBjeT0iODAiIHJ4PSI5IiByeT0iMTEiLz4KICAgIDxwYXRoIGQ9Ik0gMTAwIDkxIEwgOTUgMTA1IEwgOTIgMTI1IE0gMTAwIDkxIEwgMTA1IDEwNSBMIDEwOCAxMjUiLz4KICAgIDxwYXRoIGQ9Ik0gMTAwIDkxIEwgOTAgMTAwIEwgODUgMTEwIE0gMTAwIDkxIEwgMTEwIDEwMCBMIDExNSAxMTAiLz4KICAgIDxlbGxpcHNlIGN4PSIxMDAiIGN5PSI2OCIgcng9IjgiIHJ5PSI5Ii8+CiAgPC9nPgoKICA8IS0tIENoaWxkIDMgLSByaWdodCwgcnVubmluZyAtLT4KICA8ZyBmaWxsPSJ3aGl0ZSI+CiAgICA8ZWxsaXBzZSBjeD0iMTM1IiBjeT0iODgiIHJ4PSI4IiByeT0iMTAiLz4KICAgIDxwYXRoIGQ9Ik0gMTM1IDk4IEwgMTMwIDExMiBMIDEyNSAxMzIgTSAxMzUgOTggTCAxNDAgMTEyIEwgMTQ1IDEzMiIvPgogICAgPHBhdGggZD0iTSAxMzUgOTggTCAxMzIgMTA4IEwgMTI4IDEyMCBNIDEzNSA5OCBMIDEzOCAxMDggTCAxNDIgMTIwIi8+CiAgICA8ZWxsaXBzZSBjeD0iMTM1IiBjeT0iNzgiIHJ4PSI3IiByeT0iOCIvPgogIDwvZz4KCiAgPCEtLSBDdXJ2ZWQgdGV4dCAiTEVBU1QgT0YgVEhFU0UiIG9uIHRvcCAtLT4KICA8ZGVmcz4KICAgIDxwYXRoIGlkPSJ0b3BDdXJ2ZSIgZD0iTSAzMCwxMDAgQSA3MCw3MCAwIDAsMSAxNzAsMTAwIiBmaWxsPSJub25lIi8+CiAgPC9kZWZzPgogIDx0ZXh0IGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgZm9udC13ZWlnaHQ9Im5vcm1hbCIgZmlsbD0id2hpdGUiIGxldHRlci1zcGFjaW5nPSIyIj4KICAgIDx0ZXh0UGF0aCBocmVmPSIjdG9wQ3VydmUiIHN0YXJ0T2Zmc2V0PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPgogICAgICBMRUFTVCBPRiBUSEVTRQogICAgPC90ZXh0UGF0aD4KICA8L3RleHQ+CgogIDwhLS0gQ3VydmVkIHRleHQgIkNBUk9MSU5BUyIgb24gYm90dG9tIC0tPgogIDxkZWZzPgogICAgPHBhdGggaWQ9ImJvdHRvbUN1cnZlIiBkPSJNIDE3MCwxMDAgQSA3MCw3MCAwIDAsMSAzMCwxMDAiIGZpbGw9Im5vbmUiLz4KICA8L2RlZnM+CiAgPHRleHQgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBmb250LXdlaWdodD0ibm9ybWFsIiBmaWxsPSJ3aGl0ZSIgbGV0dGVyLXNwYWNpbmc9IjMiPgogICAgPHRleHRQYXRoIGhyZWY9IiNib3R0b21DdXJ2ZSIgc3RhcnRPZmZzZXQ9IjUwJSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICAgIENBUk9MSU5BUwogICAgPC90ZXh0UGF0aD4KICA8L3RleHQ+CgogIDwhLS0gU21hbGwgZGVjb3JhdGl2ZSBkb3RzIC0tPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMTAwIiByPSIyIiBmaWxsPSJ3aGl0ZSIvPgogIDxjaXJjbGUgY3g9IjE3NSIgY3k9IjEwMCIgcj0iMiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg==" alt="Least of These Carolinas Logo" class="header-logo">
+            <h1>Least of These Carolinas</h1>
+            <p style="font-style: italic; color: var(--brand-red); font-weight: 600; font-size: 1.1rem; margin-bottom: 20px;">Impacting the lives of children affected by foster and kinship care</p>
+            <p>Use this form to complete a request for one of the following services: <strong>Bags of Hope, Birthday, General Request, Life Box, Just Like You</strong>. Detailed information on each of these services can be found on our website at <a href="https://lotcarolinas.com" style="color: var(--brand-red); font-weight: 600; text-decoration: underline;" target="_blank" rel="noopener noreferrer">lotcarolinas.com</a></p>
+        </div>
+
+        <div class="form-container">
+            <div id="successMessage" class="message success"></div>
+            <div id="errorMessage" class="message error"></div>
+
+            <form id="lotcForm">
+                <!-- Request Type Section - MOVED TO TOP -->
+                <div class="form-section">
+                    <h2 class="section-title">Request Type</h2>
+
+                    <div class="form-group">
+                        <label class="required">Request Type</label>
+                        <select id="requestType" name="requestType" required>
+                            <option value="">-- Select --</option>
+                            <option value="Bags of Hope">Bags of Hope</option>
+                            <option value="General Request">General Request</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Life Box">Life Box</option>
+                            <option value="Just Like You">Just Like You</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Relationship Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Relationship to Child</h2>
+
+                    <div class="form-group">
+                        <label class="required">Relationship to the Child of the Adult Completing the Form</label>
+                        <select id="relationship" name="relationship" required>
+                            <option value="">-- Select --</option>
+                            <option value="Caregiver">Caregiver</option>
+                            <option value="DSS Social Worker">DSS Social Worker</option>
+                            <option value="Other (GAL, case worker, etc.)">Other (GAL, case worker, etc.)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Caregiver Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Caregiver Information</h2>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">First Name</label>
+                            <input type="text" id="caregiverFirstName" name="caregiverFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Initial</label>
+                            <input type="text" id="caregiverMiddleName" name="caregiverMiddleName">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Last Name</label>
+                            <input type="text" id="caregiverLastName" name="caregiverLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Mobile Number <span class="helper-text">(For status updates)</span></label>
+                        <input type="tel" id="caregiverPhone" name="caregiverPhone" placeholder="(555) 555-5555">
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="noMobileNumber" name="noMobileNumber" style="width: auto;">
+                            <label for="noMobileNumber" style="margin: 0; font-weight: 400;">I do not have a mobile number</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="alternativePhoneGroup">
+                        <label class="required">Alternative Phone Number</label>
+                        <input type="tel" id="alternativePhone" name="alternativePhone" placeholder="(555) 555-5555">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Do you know the Caregiver's email address?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" id="knowEmailYes" name="knowCaregiverEmail" value="yes" required>
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" id="knowEmailNo" name="knowCaregiverEmail" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="caregiverEmailGroup">
+                        <label class="required">Caregiver's Email Address</label>
+                        <input type="email" id="caregiverEmail" name="caregiverEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Caregiver's Street Address</label>
+                        <input type="text" id="caregiverStreet" name="caregiverStreet" placeholder="Street Address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">ZIP Code</label>
+                            <input type="text" id="caregiverZip" name="caregiverZip" placeholder="12345" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">City</label>
+                            <input type="text" id="caregiverCity" name="caregiverCity" readonly required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">State</label>
+                            <input type="text" id="caregiverState" name="caregiverState" maxlength="2" readonly required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">County</label>
+                        <input type="text" id="caregiverCounty" name="caregiverCounty" readonly required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Is the caregiver a licensed foster parent?</label>
+                        <select id="isLicensedFoster" name="isLicensedFoster" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Do not know">Do not know</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Social Worker Section -->
+                <div class="form-section">
+                    <h2 class="section-title">DSS Social Worker Information</h2>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">First Name</label>
+                            <input type="text" id="socialWorkerFirstName" name="socialWorkerFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Initial</label>
+                            <input type="text" id="socialWorkerMiddleName" name="socialWorkerMiddleName">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Last Name</label>
+                            <input type="text" id="socialWorkerLastName" name="socialWorkerLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Mobile Number <span class="helper-text">(For status updates)</span></label>
+                        <input type="tel" id="socialWorkerPhone" name="socialWorkerPhone" placeholder="(555) 555-5555">
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="noSocialWorkerMobileNumber" name="noSocialWorkerMobileNumber" style="width: auto;">
+                            <label for="noSocialWorkerMobileNumber" style="margin: 0; font-weight: 400;">I do not have a mobile number</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="alternativeSocialWorkerPhoneGroup">
+                        <label class="required">Alternative Phone Number</label>
+                        <input type="tel" id="alternativeSocialWorkerPhone" name="alternativeSocialWorkerPhone" placeholder="(555) 555-5555">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Extension</label>
+                        <input type="text" id="socialWorkerPhoneExt" name="socialWorkerPhoneExt">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Can the Social Worker receive text messages</label>
+                        <select id="socialWorkerCanText" name="socialWorkerCanText" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Social Worker's Email</label>
+                        <input type="email" id="socialWorkerEmail" name="socialWorkerEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Social Worker county of employment</label>
+                        <select id="socialWorkerCounty" name="socialWorkerCounty" required>
+                            <option value="">-- Select --</option>
+                            <option value="Abbeville, SC">Abbeville, SC</option>
+                            <option value="Aiken, SC">Aiken, SC</option>
+                            <option value="Alamance, NC">Alamance, NC</option>
+                            <option value="Alexander, NC">Alexander, NC</option>
+                            <option value="Alleghany, NC">Alleghany, NC</option>
+                            <option value="Allendale, SC">Allendale, SC</option>
+                            <option value="Anderson, SC">Anderson, SC</option>
+                            <option value="Anson, NC">Anson, NC</option>
+                            <option value="Ashe, NC">Ashe, NC</option>
+                            <option value="Avery, NC">Avery, NC</option>
+                            <option value="Bamberg, SC">Bamberg, SC</option>
+                            <option value="Barnwell, SC">Barnwell, SC</option>
+                            <option value="Beaufort, NC">Beaufort, NC</option>
+                            <option value="Beaufort, SC">Beaufort, SC</option>
+                            <option value="Berkeley, SC">Berkeley, SC</option>
+                            <option value="Bertie, NC">Bertie, NC</option>
+                            <option value="Bladen, NC">Bladen, NC</option>
+                            <option value="Brunswick, NC">Brunswick, NC</option>
+                            <option value="Buncombe, NC">Buncombe, NC</option>
+                            <option value="Burke, NC">Burke, NC</option>
+                            <option value="Cabarrus, NC">Cabarrus, NC</option>
+                            <option value="Caldwell, NC">Caldwell, NC</option>
+                            <option value="Calhoun, SC">Calhoun, SC</option>
+                            <option value="Camden, NC">Camden, NC</option>
+                            <option value="Carteret, NC">Carteret, NC</option>
+                            <option value="Caswell, NC">Caswell, NC</option>
+                            <option value="Catawba, NC">Catawba, NC</option>
+                            <option value="Charleston, SC">Charleston, SC</option>
+                            <option value="Chatham, NC">Chatham, NC</option>
+                            <option value="Cherokee, NC">Cherokee, NC</option>
+                            <option value="Cherokee, SC">Cherokee, SC</option>
+                            <option value="Chester, SC">Chester, SC</option>
+                            <option value="Chesterfield, SC">Chesterfield, SC</option>
+                            <option value="Chowan, NC">Chowan, NC</option>
+                            <option value="Clarendon, SC">Clarendon, SC</option>
+                            <option value="Clay, NC">Clay, NC</option>
+                            <option value="Cleveland, NC">Cleveland, NC</option>
+                            <option value="Colleton, SC">Colleton, SC</option>
+                            <option value="Columbus, NC">Columbus, NC</option>
+                            <option value="Craven, NC">Craven, NC</option>
+                            <option value="Cumberland, NC">Cumberland, NC</option>
+                            <option value="Currituck, NC">Currituck, NC</option>
+                            <option value="Dare, NC">Dare, NC</option>
+                            <option value="Darlington, SC">Darlington, SC</option>
+                            <option value="Davidson, NC">Davidson, NC</option>
+                            <option value="Davie, NC">Davie, NC</option>
+                            <option value="Dillon, SC">Dillon, SC</option>
+                            <option value="Dorchester, SC">Dorchester, SC</option>
+                            <option value="Duplin, NC">Duplin, NC</option>
+                            <option value="Durham, NC">Durham, NC</option>
+                            <option value="Edgecombe, NC">Edgecombe, NC</option>
+                            <option value="Edgefield, SC">Edgefield, SC</option>
+                            <option value="Fairfield, SC">Fairfield, SC</option>
+                            <option value="Florence, SC">Florence, SC</option>
+                            <option value="Forsyth, NC">Forsyth, NC</option>
+                            <option value="Franklin, NC">Franklin, NC</option>
+                            <option value="Gaston, NC">Gaston, NC</option>
+                            <option value="Gates, NC">Gates, NC</option>
+                            <option value="Georgetown, SC">Georgetown, SC</option>
+                            <option value="Graham, NC">Graham, NC</option>
+                            <option value="Granville, NC">Granville, NC</option>
+                            <option value="Greene, NC">Greene, NC</option>
+                            <option value="Greenville, SC">Greenville, SC</option>
+                            <option value="Greenwood, SC">Greenwood, SC</option>
+                            <option value="Guilford, NC">Guilford, NC</option>
+                            <option value="Halifax, NC">Halifax, NC</option>
+                            <option value="Hampton, SC">Hampton, SC</option>
+                            <option value="Harnett, NC">Harnett, NC</option>
+                            <option value="Haywood, NC">Haywood, NC</option>
+                            <option value="Henderson, NC">Henderson, NC</option>
+                            <option value="Hertford, NC">Hertford, NC</option>
+                            <option value="Hoke, NC">Hoke, NC</option>
+                            <option value="Horry, SC">Horry, SC</option>
+                            <option value="Hyde, NC">Hyde, NC</option>
+                            <option value="Iredell, NC">Iredell, NC</option>
+                            <option value="Jackson, NC">Jackson, NC</option>
+                            <option value="Jasper, SC">Jasper, SC</option>
+                            <option value="Johnston, NC">Johnston, NC</option>
+                            <option value="Jones, NC">Jones, NC</option>
+                            <option value="Kershaw, SC">Kershaw, SC</option>
+                            <option value="Lancaster, SC">Lancaster, SC</option>
+                            <option value="Laurens, SC">Laurens, SC</option>
+                            <option value="Lee, NC">Lee, NC</option>
+                            <option value="Lee, SC">Lee, SC</option>
+                            <option value="Lenoir, NC">Lenoir, NC</option>
+                            <option value="Lexington, SC">Lexington, SC</option>
+                            <option value="Lincoln, NC">Lincoln, NC</option>
+                            <option value="Macon, NC">Macon, NC</option>
+                            <option value="Madison, NC">Madison, NC</option>
+                            <option value="Marion, SC">Marion, SC</option>
+                            <option value="Marlboro, SC">Marlboro, SC</option>
+                            <option value="Martin, NC">Martin, NC</option>
+                            <option value="McCormick, SC">McCormick, SC</option>
+                            <option value="McDowell, NC">McDowell, NC</option>
+                            <option value="Mecklenburg, NC">Mecklenburg, NC</option>
+                            <option value="Mitchell, NC">Mitchell, NC</option>
+                            <option value="Montgomery, NC">Montgomery, NC</option>
+                            <option value="Moore, NC">Moore, NC</option>
+                            <option value="Nash, NC">Nash, NC</option>
+                            <option value="New Hanover, NC">New Hanover, NC</option>
+                            <option value="Newberry, SC">Newberry, SC</option>
+                            <option value="Northampton, NC">Northampton, NC</option>
+                            <option value="Oconee, SC">Oconee, SC</option>
+                            <option value="Onslow, NC">Onslow, NC</option>
+                            <option value="Orange, NC">Orange, NC</option>
+                            <option value="Orangeburg, SC">Orangeburg, SC</option>
+                            <option value="Other, XX">Other, XX</option>
+                            <option value="Pamlico, NC">Pamlico, NC</option>
+                            <option value="Pasquotank, NC">Pasquotank, NC</option>
+                            <option value="Pender, NC">Pender, NC</option>
+                            <option value="Perquimans, NC">Perquimans, NC</option>
+                            <option value="Person, NC">Person, NC</option>
+                            <option value="Pickens, SC">Pickens, SC</option>
+                            <option value="Pitt, NC">Pitt, NC</option>
+                            <option value="Polk, NC">Polk, NC</option>
+                            <option value="Randolph, NC">Randolph, NC</option>
+                            <option value="Richland, SC">Richland, SC</option>
+                            <option value="Richmond, NC">Richmond, NC</option>
+                            <option value="Robeson, NC">Robeson, NC</option>
+                            <option value="Rockingham, NC">Rockingham, NC</option>
+                            <option value="Rowan, NC">Rowan, NC</option>
+                            <option value="Rutherford, NC">Rutherford, NC</option>
+                            <option value="Saluda, SC">Saluda, SC</option>
+                            <option value="Sampson, NC">Sampson, NC</option>
+                            <option value="Scotland, NC">Scotland, NC</option>
+                            <option value="Spartanburg, SC">Spartanburg, SC</option>
+                            <option value="Stanly, NC">Stanly, NC</option>
+                            <option value="Stokes, NC">Stokes, NC</option>
+                            <option value="Sumter, SC">Sumter, SC</option>
+                            <option value="Surry, NC">Surry, NC</option>
+                            <option value="Swain, NC">Swain, NC</option>
+                            <option value="Transylvania, NC">Transylvania, NC</option>
+                            <option value="Tyrell, NC">Tyrell, NC</option>
+                            <option value="Union, NC">Union, NC</option>
+                            <option value="Union, SC">Union, SC</option>
+                            <option value="Unknown, XX">Unknown, XX</option>
+                            <option value="Vance, NC">Vance, NC</option>
+                            <option value="Wake, NC">Wake, NC</option>
+                            <option value="Warren, NC">Warren, NC</option>
+                            <option value="Washington, NC">Washington, NC</option>
+                            <option value="Watauga, NC">Watauga, NC</option>
+                            <option value="Wayne, NC">Wayne, NC</option>
+                            <option value="Wilkes, NC">Wilkes, NC</option>
+                            <option value="Williamsburg, SC">Williamsburg, SC</option>
+                            <option value="Wilson, NC">Wilson, NC</option>
+                            <option value="Yadkin, NC">Yadkin, NC</option>
+                            <option value="Yancey, NC">Yancey, NC</option>
+                            <option value="York, SC">York, SC</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Request Details Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Request Details</h2>
+
+                    <div class="form-group">
+                        <label class="required">Completion Contact - Who should we contact when the request is ready?</label>
+                        <select id="completionContact" name="completionContact" required>
+                            <option value="">-- Select --</option>
+                            <option value="Caregiver">Caregiver</option>
+                            <option value="Social Worker">Social Worker</option>
+                            <option value="Person who completed the form">Person who completed the form</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Pick Up Location</label>
+                        <select id="pickupLocation" name="pickupLocation" required>
+                            <option value="">-- Select --</option>
+                            <option value="Belmont/Keith Hawthorne">Belmont/Keith Hawthorne</option>
+                            <option value="Buncombe County/Asheville">Buncombe County/Asheville</option>
+                            <option value="Burke County/Morganton - Jamestown Road">Burke County/Morganton - Jamestown Road</option>
+                            <option value="Catawba County/Hickory - S. Center Street">Catawba County/Hickory - S. Center Street</option>
+                            <option value="Cleveland County/Shelby - E. Dixon Blvd.">Cleveland County/Shelby - E. Dixon Blvd.</option>
+                            <option value="Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius">Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius</option>
+                            <option value="LOTC Office - S. Myrtle School Rd, Gastonia">LOTC Office - S. Myrtle School Rd, Gastonia</option>
+                            <option value="McDowell County/Marion - Worley Road">McDowell County/Marion - Worley Road</option>
+                            <option value="Hendrick Motors/Charlotte">Hendrick Motors/Charlotte</option>
+                            <option value="Mecklenburg County/Northlake">Mecklenburg County/Northlake</option>
+                            <option value="Rutherford County/Forest City">Rutherford County/Forest City</option>
+                            <option value="Stanly County/Albemarle - Aquadale Road">Stanly County/Albemarle - Aquadale Road</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Child Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Child Information</h2>
+
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label class="required">Child's First Name</label>
+                            <input type="text" id="childFirstName" name="childFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Child's Last Name</label>
+                            <input type="text" id="childLastInitial" name="childLastInitial" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Placement Type</label>
+                        <select id="childPlacementType" name="childPlacementType" required>
+                            <option value="">-- Select --</option>
+                            <option value="Foster - Single Family Home">Foster - Single Family Home</option>
+                            <option value="Foster - Group Home placement">Foster - Group Home placement</option>
+                            <option value="Kinship">Kinship</option>
+                            <option value="Guardianship">Guardianship</option>
+                            <option value="Other (GAL, caseworker, etc.)">Other (GAL, caseworker, etc.)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Child's Nickname</label>
+                        <input type="text" id="childNickname" name="childNickname">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Gender</label>
+                        <select id="childGender" name="childGender" required>
+                            <option value="">-- Select --</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Date of Birth</label>
+                        <input type="date" id="childDOB" name="childDOB" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Age of Child <span class="helper-text">(Auto-calculated)</span></label>
+                        <input type="text" id="childAge" name="childAge" readonly required placeholder="Will auto-calculate from DOB">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Ethnicity</label>
+                        <select id="childEthnicity" name="childEthnicity" required>
+                            <option value="">-- Select --</option>
+                            <option value="African-American">African-American</option>
+                            <option value="Asian">Asian</option>
+                            <option value="Bi-Racial">Bi-Racial</option>
+                            <option value="Caucasian">Caucasian</option>
+                            <option value="Hawaiian or Pacific Islander">Hawaiian or Pacific Islander</option>
+                            <option value="Hispanic">Hispanic</option>
+                            <option value="Middle Eastern">Middle Eastern</option>
+                            <option value="Multi-Racial">Multi-Racial</option>
+                            <option value="Native American">Native American</option>
+                            <option value="Don't Know/Prefer not to answer">Don't Know/Prefer not to answer</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Additional Information</h2>
+
+                    <div class="form-group">
+                        <label>Additional Information (Required for General Request and Just Like You Scholarship)</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="5" placeholder="Please provide any additional details..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Terms Agreement -->
+                <div class="form-section">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                        <label for="agreeToTerms" class="checkbox-label">
+                            By submitting this request, I agree to receive text messages and/or emails from Least of These Carolinas.
+                            To view our Privacy Policy, visit our website:
+                            <a href="https://lotcarolinas.com/privacy-policy" target="_blank" rel="noopener noreferrer">
+                                https://lotcarolinas.com/privacy-policy
+                            </a>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Conditional field visibility
+        document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const emailGroup = document.getElementById('caregiverEmailGroup');
+                const emailInput = document.getElementById('caregiverEmail');
+                if (this.value === 'yes') {
+                    emailGroup.classList.remove('hidden');
+                    emailInput.setAttribute('required', 'required');
+                } else {
+                    emailGroup.classList.add('hidden');
+                    emailInput.removeAttribute('required');
+                    emailInput.value = '';
+                }
+            });
+        });
+
+        // Mobile number checkbox logic
+        document.getElementById('noMobileNumber').addEventListener('change', function() {
+            const alternativePhoneGroup = document.getElementById('alternativePhoneGroup');
+            const alternativePhoneInput = document.getElementById('alternativePhone');
+            const mobilePhoneInput = document.getElementById('caregiverPhone');
+
+            if (this.checked) {
+                alternativePhoneGroup.classList.remove('hidden');
+                alternativePhoneInput.setAttribute('required', 'required');
+                mobilePhoneInput.removeAttribute('required');
+                mobilePhoneInput.value = '';
+            } else {
+                alternativePhoneGroup.classList.add('hidden');
+                alternativePhoneInput.removeAttribute('required');
+                alternativePhoneInput.value = '';
+                mobilePhoneInput.setAttribute('required', 'required');
+            }
+        });
+
+        // ZIP code lookup for auto-population
+        const caregiverZipInput = document.getElementById('caregiverZip');
+        const caregiverCityInput = document.getElementById('caregiverCity');
+        const caregiverStateInput = document.getElementById('caregiverState');
+        const caregiverCountyInput = document.getElementById('caregiverCounty');
+
+        // NC/SC County mapping by full ZIP code for accuracy
+        const countyMapping = {
+            // North Carolina - Wake County
+            '27511': 'Wake, NC', '27513': 'Wake, NC', '27518': 'Wake, NC', '27519': 'Wake, NC',
+            '27529': 'Wake, NC', '27539': 'Wake, NC', '27587': 'Wake, NC', '27591': 'Wake, NC',
+            '27601': 'Wake, NC', '27603': 'Wake, NC', '27604': 'Wake, NC', '27605': 'Wake, NC',
+            '27606': 'Wake, NC', '27607': 'Wake, NC', '27608': 'Wake, NC', '27609': 'Wake, NC',
+            '27610': 'Wake, NC', '27612': 'Wake, NC', '27613': 'Wake, NC', '27614': 'Wake, NC',
+            '27615': 'Wake, NC', '27616': 'Wake, NC', '27617': 'Wake, NC', '27695': 'Wake, NC',
+            '27697': 'Wake, NC', '27699': 'Wake, NC', '27701': 'Wake, NC', '27703': 'Wake, NC',
+
+            // North Carolina - Mecklenburg County
+            '28201': 'Mecklenburg, NC', '28202': 'Mecklenburg, NC', '28203': 'Mecklenburg, NC',
+            '28204': 'Mecklenburg, NC', '28205': 'Mecklenburg, NC', '28206': 'Mecklenburg, NC',
+            '28207': 'Mecklenburg, NC', '28208': 'Mecklenburg, NC', '28209': 'Mecklenburg, NC',
+            '28210': 'Mecklenburg, NC', '28211': 'Mecklenburg, NC', '28212': 'Mecklenburg, NC',
+            '28213': 'Mecklenburg, NC', '28214': 'Mecklenburg, NC', '28215': 'Mecklenburg, NC',
+            '28216': 'Mecklenburg, NC', '28217': 'Mecklenburg, NC', '28226': 'Mecklenburg, NC',
+            '28227': 'Mecklenburg, NC', '28244': 'Mecklenburg, NC', '28262': 'Mecklenburg, NC',
+            '28269': 'Mecklenburg, NC', '28270': 'Mecklenburg, NC', '28273': 'Mecklenburg, NC',
+            '28274': 'Mecklenburg, NC', '28277': 'Mecklenburg, NC', '28278': 'Mecklenburg, NC',
+
+            // North Carolina - Gaston County
+            '28012': 'Gaston, NC', '28016': 'Gaston, NC', '28032': 'Gaston, NC', '28033': 'Gaston, NC',
+            '28034': 'Gaston, NC', '28052': 'Gaston, NC', '28053': 'Gaston, NC', '28054': 'Gaston, NC',
+            '28056': 'Gaston, NC', '28086': 'Gaston, NC', '28092': 'Gaston, NC', '28098': 'Gaston, NC',
+
+            // North Carolina - Cumberland County
+            '28301': 'Cumberland, NC', '28302': 'Cumberland, NC', '28303': 'Cumberland, NC',
+            '28304': 'Cumberland, NC', '28305': 'Cumberland, NC', '28306': 'Cumberland, NC',
+            '28307': 'Cumberland, NC', '28308': 'Cumberland, NC', '28309': 'Cumberland, NC',
+            '28310': 'Cumberland, NC', '28311': 'Cumberland, NC', '28312': 'Cumberland, NC',
+            '28314': 'Cumberland, NC', '28390': 'Cumberland, NC',
+
+            // North Carolina - Guilford County
+            '27214': 'Guilford, NC', '27235': 'Guilford, NC', '27260': 'Guilford, NC',
+            '27265': 'Guilford, NC', '27282': 'Guilford, NC', '27283': 'Guilford, NC',
+            '27301': 'Guilford, NC', '27310': 'Guilford, NC', '27313': 'Guilford, NC',
+            '27401': 'Guilford, NC', '27402': 'Guilford, NC', '27403': 'Guilford, NC',
+            '27404': 'Guilford, NC', '27405': 'Guilford, NC', '27406': 'Guilford, NC',
+            '27407': 'Guilford, NC', '27408': 'Guilford, NC', '27409': 'Guilford, NC',
+            '27410': 'Guilford, NC', '27411': 'Guilford, NC', '27412': 'Guilford, NC',
+            '27413': 'Guilford, NC', '27415': 'Guilford, NC', '27416': 'Guilford, NC',
+            '27417': 'Guilford, NC', '27419': 'Guilford, NC', '27420': 'Guilford, NC',
+            '27425': 'Guilford, NC', '27427': 'Guilford, NC', '27429': 'Guilford, NC',
+            '27435': 'Guilford, NC', '27438': 'Guilford, NC', '27455': 'Guilford, NC',
+            '27495': 'Guilford, NC', '27497': 'Guilford, NC', '27498': 'Guilford, NC',
+            '27499': 'Guilford, NC',
+
+            // North Carolina - Forsyth County
+            '27006': 'Forsyth, NC', '27023': 'Forsyth, NC', '27040': 'Forsyth, NC',
+            '27101': 'Forsyth, NC', '27102': 'Forsyth, NC', '27103': 'Forsyth, NC',
+            '27104': 'Forsyth, NC', '27105': 'Forsyth, NC', '27106': 'Forsyth, NC',
+            '27107': 'Forsyth, NC', '27108': 'Forsyth, NC', '27109': 'Forsyth, NC',
+            '27110': 'Forsyth, NC', '27111': 'Forsyth, NC', '27113': 'Forsyth, NC',
+            '27114': 'Forsyth, NC', '27115': 'Forsyth, NC', '27116': 'Forsyth, NC',
+            '27117': 'Forsyth, NC', '27120': 'Forsyth, NC', '27127': 'Forsyth, NC',
+            '27130': 'Forsyth, NC', '27150': 'Forsyth, NC', '27151': 'Forsyth, NC',
+            '27152': 'Forsyth, NC', '27155': 'Forsyth, NC', '27157': 'Forsyth, NC',
+            '27198': 'Forsyth, NC', '27199': 'Forsyth, NC',
+
+            // North Carolina - Durham County
+            '27701': 'Durham, NC', '27702': 'Durham, NC', '27703': 'Durham, NC',
+            '27704': 'Durham, NC', '27705': 'Durham, NC', '27706': 'Durham, NC',
+            '27707': 'Durham, NC', '27708': 'Durham, NC', '27709': 'Durham, NC',
+            '27710': 'Durham, NC', '27711': 'Durham, NC', '27712': 'Durham, NC',
+            '27713': 'Durham, NC', '27715': 'Durham, NC', '27717': 'Durham, NC',
+            '27722': 'Durham, NC',
+
+            // North Carolina - Other major counties
+            '28540': 'Onslow, NC', '28541': 'Onslow, NC', '28542': 'Onslow, NC',
+            '28543': 'Onslow, NC', '28544': 'Onslow, NC', '28545': 'Onslow, NC',
+            '28546': 'Onslow, NC', '28547': 'Onslow, NC',
+            '28601': 'Catawba, NC', '28602': 'Catawba, NC', '28609': 'Catawba, NC',
+            '28610': 'Catawba, NC', '28611': 'Catawba, NC', '28613': 'Catawba, NC',
+            '28630': 'Catawba, NC', '28638': 'Catawba, NC', '28645': 'Catawba, NC',
+            '28650': 'Catawba, NC', '28655': 'Catawba, NC', '28658': 'Catawba, NC',
+            '28803': 'Buncombe, NC', '28804': 'Buncombe, NC', '28805': 'Buncombe, NC',
+            '28806': 'Buncombe, NC', '28801': 'Buncombe, NC', '28802': 'Buncombe, NC',
+            '28401': 'New Hanover, NC', '28402': 'New Hanover, NC', '28403': 'New Hanover, NC',
+            '28404': 'New Hanover, NC', '28405': 'New Hanover, NC', '28406': 'New Hanover, NC',
+            '28407': 'New Hanover, NC', '28408': 'New Hanover, NC', '28409': 'New Hanover, NC',
+            '28410': 'New Hanover, NC', '28411': 'New Hanover, NC', '28412': 'New Hanover, NC',
+
+            // South Carolina - Major counties
+            '29601': 'Greenville, SC', '29602': 'Greenville, SC', '29605': 'Greenville, SC',
+            '29607': 'Greenville, SC', '29609': 'Greenville, SC', '29611': 'Greenville, SC',
+            '29615': 'Greenville, SC', '29617': 'Greenville, SC', '29301': 'Spartanburg, SC',
+            '29302': 'Spartanburg, SC', '29303': 'Spartanburg, SC', '29306': 'Spartanburg, SC',
+            '29401': 'Charleston, SC', '29403': 'Charleston, SC', '29404': 'Charleston, SC',
+            '29405': 'Charleston, SC', '29406': 'Charleston, SC', '29407': 'Charleston, SC',
+            '29412': 'Charleston, SC', '29414': 'Charleston, SC', '29420': 'Charleston, SC',
+            '29424': 'Charleston, SC', '29425': 'Charleston, SC', '29492': 'Charleston, SC',
+            '29501': 'Florence, SC', '29502': 'Florence, SC', '29503': 'Florence, SC',
+            '29505': 'Florence, SC', '29506': 'Florence, SC',
+            '29710': 'York, SC', '29715': 'York, SC', '29720': 'York, SC', '29730': 'York, SC',
+            '29801': 'Aiken, SC', '29802': 'Aiken, SC', '29803': 'Aiken, SC', '29805': 'Aiken, SC',
+            '29902': 'Beaufort, SC', '29906': 'Beaufort, SC', '29907': 'Beaufort, SC'
+        };
+
+        caregiverZipInput.addEventListener('input', async function() {
+            const zip = this.value.trim();
+
+            // Clear fields if ZIP is incomplete
+            if (zip.length < 5) {
+                caregiverCityInput.value = '';
+                caregiverStateInput.value = '';
+                caregiverCountyInput.value = '';
+                return;
+            }
+
+            // Only lookup when we have 5 digits
+            if (zip.length === 5 && /^\d{5}$/.test(zip)) {
+                try {
+                    const response = await fetch(`https://api.zippopotam.us/us/${zip}`);
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        caregiverCityInput.value = data.places[0]['place name'];
+                        caregiverStateInput.value = data.places[0]['state abbreviation'];
+
+                        // Get county from mapping based on full ZIP code
+                        const county = countyMapping[zip] || 'Unknown, XX';
+                        caregiverCountyInput.value = county;
+                    } else {
+                        // Invalid ZIP code
+                        caregiverCityInput.value = '';
+                        caregiverStateInput.value = '';
+                        caregiverCountyInput.value = '';
+                        alert('Invalid ZIP code. Please check and try again.');
+                    }
+                } catch (error) {
+                    console.error('Error looking up ZIP code:', error);
+                    caregiverCityInput.value = '';
+                    caregiverStateInput.value = '';
+                    caregiverCountyInput.value = '';
+                }
+            }
+        });
+
+        // Social worker mobile number checkbox logic
+        document.getElementById('noSocialWorkerMobileNumber').addEventListener('change', function() {
+            const alternativeSocialWorkerPhoneGroup = document.getElementById('alternativeSocialWorkerPhoneGroup');
+            const alternativeSocialWorkerPhoneInput = document.getElementById('alternativeSocialWorkerPhone');
+            const socialWorkerPhoneInput = document.getElementById('socialWorkerPhone');
+
+            if (this.checked) {
+                alternativeSocialWorkerPhoneGroup.classList.remove('hidden');
+                alternativeSocialWorkerPhoneInput.setAttribute('required', 'required');
+                socialWorkerPhoneInput.removeAttribute('required');
+                socialWorkerPhoneInput.value = '';
+            } else {
+                alternativeSocialWorkerPhoneGroup.classList.add('hidden');
+                alternativeSocialWorkerPhoneInput.removeAttribute('required');
+                alternativeSocialWorkerPhoneInput.value = '';
+                socialWorkerPhoneInput.setAttribute('required', 'required');
+            }
+        });
+
+        // Child age auto-calculation from date of birth
+        document.getElementById('childDOB').addEventListener('change', function() {
+            const childAgeInput = document.getElementById('childAge');
+            const dob = new Date(this.value);
+            const today = new Date();
+
+            if (this.value) {
+                // Calculate age
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+
+                // Adjust age if birthday hasn't occurred this year yet
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+
+                // Handle babies under 1 year old
+                if (age < 1) {
+                    const months = Math.floor((today - dob) / (1000 * 60 * 60 * 24 * 30));
+                    childAgeInput.value = months < 1 ? '<1 month' : `${months} months`;
+                } else {
+                    childAgeInput.value = age.toString();
+                }
+            } else {
+                childAgeInput.value = '';
+            }
+        });
+
+        // Form submission with loading state and error handling
+        document.getElementById('lotcForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.submit-btn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Hide any previous messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+
+                // Send data to server
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Show success message
+                    successMessage.textContent = 'Form submitted successfully! Thank you for your request.';
+                    successMessage.style.display = 'block';
+
+                    // Reset form
+                    this.reset();
+
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    // Show error message
+                    errorMessage.textContent = result.message || 'Error submitting form. Please try again.';
+                    errorMessage.style.display = 'block';
+                    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                // Show error message
+                errorMessage.textContent = 'Network error. Please check your connection and try again.';
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                console.error('Error:', error);
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Request';
+            }
+        });
+    </script>
+</body>
+</html>

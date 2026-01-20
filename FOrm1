@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Least of These Carolinas Request Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #dc2626;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .form-container {
+            background: white;
+            border: 3px solid #dc2626;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            color: #b91c1c;
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #fecaca;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: " *";
+            color: #dc2626;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #fca5a5;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            margin-right: 6px;
+            cursor: pointer;
+            accent-color: #dc2626;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 4px;
+            cursor: pointer;
+            accent-color: #dc2626;
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: #dc2626;
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        .submit-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .error {
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Least of These Carolinas Request Form</h1>
+            <p>Use this form to complete a request for one of the following services: Bags of Hope, Birthday, General Request, Life Box, Just Like You. Detail information on each of these services can be found on our website at lotcarolinas.com</p>
+        </div>
+
+        <div class="form-container">
+            <form id="lotcForm">
+                <!-- Relationship Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Relationship to Child</h2>
+                    
+                    <div class="form-group">
+                        <label class="required">Relationship to the Child of the Adult Completing the Form</label>
+                        <select id="relationship" name="relationship" required>
+                            <option value="">-- Select --</option>
+                            <option value="Caregiver">Caregiver</option>
+                            <option value="DSS Social Worker">DSS Social Worker</option>
+                            <option value="Other (GAL, case worker, etc.)">Other (GAL, case worker, etc.)</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="relationshipOtherGroup">
+                        <label>Please specify</label>
+                        <input type="text" id="relationshipOther" name="relationshipOther">
+                    </div>
+                </div>
+
+                <!-- Caregiver Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Caregiver Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">First Name</label>
+                            <input type="text" id="caregiverFirstName" name="caregiverFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Name</label>
+                            <input type="text" id="caregiverMiddleName" name="caregiverMiddleName">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Last Name</label>
+                            <input type="text" id="caregiverLastName" name="caregiverLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Phone Number</label>
+                            <input type="tel" id="caregiverPhone" name="caregiverPhone" placeholder="(555) 555-5555" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Extension</label>
+                            <input type="text" id="caregiverPhoneExt" name="caregiverPhoneExt">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Can the Caregiver receive text messages</label>
+                        <select id="caregiverCanText" name="caregiverCanText" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Do not know">Do not know</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Do you know the Caregiver's email address?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" id="knowEmailYes" name="knowCaregiverEmail" value="yes" required>
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" id="knowEmailNo" name="knowCaregiverEmail" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group hidden" id="caregiverEmailGroup">
+                        <label class="required">Caregiver's Email Address</label>
+                        <input type="email" id="caregiverEmail" name="caregiverEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Caregiver's County of Residence</label>
+                        <select id="caregiverCounty" name="caregiverCounty" required>
+                            <option value="">-- Select --</option>
+                            <option value="Abbeville, SC">Abbeville, SC</option>
+                            <option value="Aiken, SC">Aiken, SC</option>
+                            <option value="Alamance, NC">Alamance, NC</option>
+                            <option value="Alexander, NC">Alexander, NC</option>
+                            <option value="Alleghany, NC">Alleghany, NC</option>
+                            <option value="Allendale, SC">Allendale, SC</option>
+                            <option value="Anderson, SC">Anderson, SC</option>
+                            <option value="Anson, NC">Anson, NC</option>
+                            <option value="Ashe, NC">Ashe, NC</option>
+                            <option value="Avery, NC">Avery, NC</option>
+                            <option value="Bamberg, SC">Bamberg, SC</option>
+                            <option value="Barnwell, SC">Barnwell, SC</option>
+                            <option value="Beaufort, NC">Beaufort, NC</option>
+                            <option value="Beaufort, SC">Beaufort, SC</option>
+                            <option value="Berkeley, SC">Berkeley, SC</option>
+                            <option value="Bertie, NC">Bertie, NC</option>
+                            <option value="Bladen, NC">Bladen, NC</option>
+                            <option value="Brunswick, NC">Brunswick, NC</option>
+                            <option value="Buncombe, NC">Buncombe, NC</option>
+                            <option value="Burke, NC">Burke, NC</option>
+                            <option value="Cabarrus, NC">Cabarrus, NC</option>
+                            <option value="Caldwell, NC">Caldwell, NC</option>
+                            <option value="Calhoun, SC">Calhoun, SC</option>
+                            <option value="Camden, NC">Camden, NC</option>
+                            <option value="Carteret, NC">Carteret, NC</option>
+                            <option value="Caswell, NC">Caswell, NC</option>
+                            <option value="Catawba, NC">Catawba, NC</option>
+                            <option value="Charleston, SC">Charleston, SC</option>
+                            <option value="Chatham, NC">Chatham, NC</option>
+                            <option value="Cherokee, NC">Cherokee, NC</option>
+                            <option value="Cherokee, SC">Cherokee, SC</option>
+                            <option value="Chester, SC">Chester, SC</option>
+                            <option value="Chesterfield, SC">Chesterfield, SC</option>
+                            <option value="Chowan, NC">Chowan, NC</option>
+                            <option value="Clarendon, SC">Clarendon, SC</option>
+                            <option value="Clay, NC">Clay, NC</option>
+                            <option value="Cleveland, NC">Cleveland, NC</option>
+                            <option value="Colleton, SC">Colleton, SC</option>
+                            <option value="Columbus, NC">Columbus, NC</option>
+                            <option value="Craven, NC">Craven, NC</option>
+                            <option value="Cumberland, NC">Cumberland, NC</option>
+                            <option value="Currituck, NC">Currituck, NC</option>
+                            <option value="Dare, NC">Dare, NC</option>
+                            <option value="Darlington, SC">Darlington, SC</option>
+                            <option value="Davidson, NC">Davidson, NC</option>
+                            <option value="Davie, NC">Davie, NC</option>
+                            <option value="Dillon, SC">Dillon, SC</option>
+                            <option value="Dorchester, SC">Dorchester, SC</option>
+                            <option value="Duplin, NC">Duplin, NC</option>
+                            <option value="Durham, NC">Durham, NC</option>
+                            <option value="Edgecombe, NC">Edgecombe, NC</option>
+                            <option value="Edgefield, SC">Edgefield, SC</option>
+                            <option value="Fairfield, SC">Fairfield, SC</option>
+                            <option value="Florence, SC">Florence, SC</option>
+                            <option value="Forsyth, NC">Forsyth, NC</option>
+                            <option value="Franklin, NC">Franklin, NC</option>
+                            <option value="Gaston, NC">Gaston, NC</option>
+                            <option value="Gates, NC">Gates, NC</option>
+                            <option value="Georgetown, SC">Georgetown, SC</option>
+                            <option value="Graham, NC">Graham, NC</option>
+                            <option value="Granville, NC">Granville, NC</option>
+                            <option value="Greene, NC">Greene, NC</option>
+                            <option value="Greenville, SC">Greenville, SC</option>
+                            <option value="Greenwood, SC">Greenwood, SC</option>
+                            <option value="Guilford, NC">Guilford, NC</option>
+                            <option value="Halifax, NC">Halifax, NC</option>
+                            <option value="Hampton, SC">Hampton, SC</option>
+                            <option value="Harnett, NC">Harnett, NC</option>
+                            <option value="Haywood, NC">Haywood, NC</option>
+                            <option value="Henderson, NC">Henderson, NC</option>
+                            <option value="Hertford, NC">Hertford, NC</option>
+                            <option value="Hoke, NC">Hoke, NC</option>
+                            <option value="Horry, SC">Horry, SC</option>
+                            <option value="Hyde, NC">Hyde, NC</option>
+                            <option value="Iredell, NC">Iredell, NC</option>
+                            <option value="Jackson, NC">Jackson, NC</option>
+                            <option value="Jasper, SC">Jasper, SC</option>
+                            <option value="Johnston, NC">Johnston, NC</option>
+                            <option value="Jones, NC">Jones, NC</option>
+                            <option value="Kershaw, SC">Kershaw, SC</option>
+                            <option value="Lancaster, SC">Lancaster, SC</option>
+                            <option value="Laurens, SC">Laurens, SC</option>
+                            <option value="Lee, NC">Lee, NC</option>
+                            <option value="Lee, SC">Lee, SC</option>
+                            <option value="Lenoir, NC">Lenoir, NC</option>
+                            <option value="Lexington, SC">Lexington, SC</option>
+                            <option value="Lincoln, NC">Lincoln, NC</option>
+                            <option value="Macon, NC">Macon, NC</option>
+                            <option value="Madison, NC">Madison, NC</option>
+                            <option value="Marion, SC">Marion, SC</option>
+                            <option value="Marlboro, SC">Marlboro, SC</option>
+                            <option value="Martin, NC">Martin, NC</option>
+                            <option value="McCormick, SC">McCormick, SC</option>
+                            <option value="McDowell, NC">McDowell, NC</option>
+                            <option value="Mecklenburg, NC">Mecklenburg, NC</option>
+                            <option value="Mitchell, NC">Mitchell, NC</option>
+                            <option value="Montgomery, NC">Montgomery, NC</option>
+                            <option value="Moore, NC">Moore, NC</option>
+                            <option value="Nash, NC">Nash, NC</option>
+                            <option value="New Hanover, NC">New Hanover, NC</option>
+                            <option value="Newberry, SC">Newberry, SC</option>
+                            <option value="Northampton, NC">Northampton, NC</option>
+                            <option value="Oconee, SC">Oconee, SC</option>
+                            <option value="Onslow, NC">Onslow, NC</option>
+                            <option value="Orange, NC">Orange, NC</option>
+                            <option value="Orangeburg, SC">Orangeburg, SC</option>
+                            <option value="Other, XX">Other, XX</option>
+                            <option value="Pamlico, NC">Pamlico, NC</option>
+                            <option value="Pasquotank, NC">Pasquotank, NC</option>
+                            <option value="Pender, NC">Pender, NC</option>
+                            <option value="Perquimans, NC">Perquimans, NC</option>
+                            <option value="Person, NC">Person, NC</option>
+                            <option value="Pickens, SC">Pickens, SC</option>
+                            <option value="Pitt, NC">Pitt, NC</option>
+                            <option value="Polk, NC">Polk, NC</option>
+                            <option value="Randolph, NC">Randolph, NC</option>
+                            <option value="Richland, SC">Richland, SC</option>
+                            <option value="Richmond, NC">Richmond, NC</option>
+                            <option value="Robeson, NC">Robeson, NC</option>
+                            <option value="Rockingham, NC">Rockingham, NC</option>
+                            <option value="Rowan, NC">Rowan, NC</option>
+                            <option value="Rutherford, NC">Rutherford, NC</option>
+                            <option value="Saluda, SC">Saluda, SC</option>
+                            <option value="Sampson, NC">Sampson, NC</option>
+                            <option value="Scotland, NC">Scotland, NC</option>
+                            <option value="Spartanburg, SC">Spartanburg, SC</option>
+                            <option value="Stanly, NC">Stanly, NC</option>
+                            <option value="Stokes, NC">Stokes, NC</option>
+                            <option value="Sumter, SC">Sumter, SC</option>
+                            <option value="Surry, NC">Surry, NC</option>
+                            <option value="Swain, NC">Swain, NC</option>
+                            <option value="Transylvania, NC">Transylvania, NC</option>
+                            <option value="Tyrell, NC">Tyrell, NC</option>
+                            <option value="Union, NC">Union, NC</option>
+                            <option value="Union, SC">Union, SC</option>
+                            <option value="Unknown, XX">Unknown, XX</option>
+                            <option value="Vance, NC">Vance, NC</option>
+                            <option value="Wake, NC">Wake, NC</option>
+                            <option value="Warren, NC">Warren, NC</option>
+                            <option value="Washington, NC">Washington, NC</option>
+                            <option value="Watauga, NC">Watauga, NC</option>
+                            <option value="Wayne, NC">Wayne, NC</option>
+                            <option value="Wilkes, NC">Wilkes, NC</option>
+                            <option value="Williamsburg, SC">Williamsburg, SC</option>
+                            <option value="Wilson, NC">Wilson, NC</option>
+                            <option value="Yadkin, NC">Yadkin, NC</option>
+                            <option value="Yancey, NC">Yancey, NC</option>
+                            <option value="York, SC">York, SC</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Is the caregiver a licensed foster parent?</label>
+                        <select id="isLicensedFoster" name="isLicensedFoster" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Do not know">Do not know</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Social Worker Section -->
+                <div class="form-section">
+                    <h2 class="section-title">DSS Social Worker Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">First Name</label>
+                            <input type="text" id="socialWorkerFirstName" name="socialWorkerFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Middle Name</label>
+                            <input type="text" id="socialWorkerMiddleName" name="socialWorkerMiddleName">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Last Name</label>
+                            <input type="text" id="socialWorkerLastName" name="socialWorkerLastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Phone Number</label>
+                            <input type="tel" id="socialWorkerPhone" name="socialWorkerPhone" placeholder="(555) 555-5555" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Extension</label>
+                            <input type="text" id="socialWorkerPhoneExt" name="socialWorkerPhoneExt">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Can the Social Worker receive text messages</label>
+                        <select id="socialWorkerCanText" name="socialWorkerCanText" required>
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Social Worker's Email</label>
+                        <input type="email" id="socialWorkerEmail" name="socialWorkerEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Social Worker county of employment</label>
+                        <select id="socialWorkerCounty" name="socialWorkerCounty" required>
+                            <option value="">-- Select --</option>
+                            <option value="Abbeville, SC">Abbeville, SC</option>
+                            <option value="Aiken, SC">Aiken, SC</option>
+                            <option value="Alamance, NC">Alamance, NC</option>
+                            <option value="Alexander, NC">Alexander, NC</option>
+                            <option value="Alleghany, NC">Alleghany, NC</option>
+                            <option value="Allendale, SC">Allendale, SC</option>
+                            <option value="Anderson, SC">Anderson, SC</option>
+                            <option value="Anson, NC">Anson, NC</option>
+                            <option value="Ashe, NC">Ashe, NC</option>
+                            <option value="Avery, NC">Avery, NC</option>
+                            <option value="Bamberg, SC">Bamberg, SC</option>
+                            <option value="Barnwell, SC">Barnwell, SC</option>
+                            <option value="Beaufort, NC">Beaufort, NC</option>
+                            <option value="Beaufort, SC">Beaufort, SC</option>
+                            <option value="Berkeley, SC">Berkeley, SC</option>
+                            <option value="Bertie, NC">Bertie, NC</option>
+                            <option value="Bladen, NC">Bladen, NC</option>
+                            <option value="Brunswick, NC">Brunswick, NC</option>
+                            <option value="Buncombe, NC">Buncombe, NC</option>
+                            <option value="Burke, NC">Burke, NC</option>
+                            <option value="Cabarrus, NC">Cabarrus, NC</option>
+                            <option value="Caldwell, NC">Caldwell, NC</option>
+                            <option value="Calhoun, SC">Calhoun, SC</option>
+                            <option value="Camden, NC">Camden, NC</option>
+                            <option value="Carteret, NC">Carteret, NC</option>
+                            <option value="Caswell, NC">Caswell, NC</option>
+                            <option value="Catawba, NC">Catawba, NC</option>
+                            <option value="Charleston, SC">Charleston, SC</option>
+                            <option value="Chatham, NC">Chatham, NC</option>
+                            <option value="Cherokee, NC">Cherokee, NC</option>
+                            <option value="Cherokee, SC">Cherokee, SC</option>
+                            <option value="Chester, SC">Chester, SC</option>
+                            <option value="Chesterfield, SC">Chesterfield, SC</option>
+                            <option value="Chowan, NC">Chowan, NC</option>
+                            <option value="Clarendon, SC">Clarendon, SC</option>
+                            <option value="Clay, NC">Clay, NC</option>
+                            <option value="Cleveland, NC">Cleveland, NC</option>
+                            <option value="Colleton, SC">Colleton, SC</option>
+                            <option value="Columbus, NC">Columbus, NC</option>
+                            <option value="Craven, NC">Craven, NC</option>
+                            <option value="Cumberland, NC">Cumberland, NC</option>
+                            <option value="Currituck, NC">Currituck, NC</option>
+                            <option value="Dare, NC">Dare, NC</option>
+                            <option value="Darlington, SC">Darlington, SC</option>
+                            <option value="Davidson, NC">Davidson, NC</option>
+                            <option value="Davie, NC">Davie, NC</option>
+                            <option value="Dillon, SC">Dillon, SC</option>
+                            <option value="Dorchester, SC">Dorchester, SC</option>
+                            <option value="Duplin, NC">Duplin, NC</option>
+                            <option value="Durham, NC">Durham, NC</option>
+                            <option value="Edgecombe, NC">Edgecombe, NC</option>
+                            <option value="Edgefield, SC">Edgefield, SC</option>
+                            <option value="Fairfield, SC">Fairfield, SC</option>
+                            <option value="Florence, SC">Florence, SC</option>
+                            <option value="Forsyth, NC">Forsyth, NC</option>
+                            <option value="Franklin, NC">Franklin, NC</option>
+                            <option value="Gaston, NC">Gaston, NC</option>
+                            <option value="Gates, NC">Gates, NC</option>
+                            <option value="Georgetown, SC">Georgetown, SC</option>
+                            <option value="Graham, NC">Graham, NC</option>
+                            <option value="Granville, NC">Granville, NC</option>
+                            <option value="Greene, NC">Greene, NC</option>
+                            <option value="Greenville, SC">Greenville, SC</option>
+                            <option value="Greenwood, SC">Greenwood, SC</option>
+                            <option value="Guilford, NC">Guilford, NC</option>
+                            <option value="Halifax, NC">Halifax, NC</option>
+                            <option value="Hampton, SC">Hampton, SC</option>
+                            <option value="Harnett, NC">Harnett, NC</option>
+                            <option value="Haywood, NC">Haywood, NC</option>
+                            <option value="Henderson, NC">Henderson, NC</option>
+                            <option value="Hertford, NC">Hertford, NC</option>
+                            <option value="Hoke, NC">Hoke, NC</option>
+                            <option value="Horry, SC">Horry, SC</option>
+                            <option value="Hyde, NC">Hyde, NC</option>
+                            <option value="Iredell, NC">Iredell, NC</option>
+                            <option value="Jackson, NC">Jackson, NC</option>
+                            <option value="Jasper, SC">Jasper, SC</option>
+                            <option value="Johnston, NC">Johnston, NC</option>
+                            <option value="Jones, NC">Jones, NC</option>
+                            <option value="Kershaw, SC">Kershaw, SC</option>
+                            <option value="Lancaster, SC">Lancaster, SC</option>
+                            <option value="Laurens, SC">Laurens, SC</option>
+                            <option value="Lee, NC">Lee, NC</option>
+                            <option value="Lee, SC">Lee, SC</option>
+                            <option value="Lenoir, NC">Lenoir, NC</option>
+                            <option value="Lexington, SC">Lexington, SC</option>
+                            <option value="Lincoln, NC">Lincoln, NC</option>
+                            <option value="Macon, NC">Macon, NC</option>
+                            <option value="Madison, NC">Madison, NC</option>
+                            <option value="Marion, SC">Marion, SC</option>
+                            <option value="Marlboro, SC">Marlboro, SC</option>
+                            <option value="Martin, NC">Martin, NC</option>
+                            <option value="McCormick, SC">McCormick, SC</option>
+                            <option value="McDowell, NC">McDowell, NC</option>
+                            <option value="Mecklenburg, NC">Mecklenburg, NC</option>
+                            <option value="Mitchell, NC">Mitchell, NC</option>
+                            <option value="Montgomery, NC">Montgomery, NC</option>
+                            <option value="Moore, NC">Moore, NC</option>
+                            <option value="Nash, NC">Nash, NC</option>
+                            <option value="New Hanover, NC">New Hanover, NC</option>
+                            <option value="Newberry, SC">Newberry, SC</option>
+                            <option value="Northampton, NC">Northampton, NC</option>
+                            <option value="Oconee, SC">Oconee, SC</option>
+                            <option value="Onslow, NC">Onslow, NC</option>
+                            <option value="Orange, NC">Orange, NC</option>
+                            <option value="Orangeburg, SC">Orangeburg, SC</option>
+                            <option value="Other, XX">Other, XX</option>
+                            <option value="Pamlico, NC">Pamlico, NC</option>
+                            <option value="Pasquotank, NC">Pasquotank, NC</option>
+                            <option value="Pender, NC">Pender, NC</option>
+                            <option value="Perquimans, NC">Perquimans, NC</option>
+                            <option value="Person, NC">Person, NC</option>
+                            <option value="Pickens, SC">Pickens, SC</option>
+                            <option value="Pitt, NC">Pitt, NC</option>
+                            <option value="Polk, NC">Polk, NC</option>
+                            <option value="Randolph, NC">Randolph, NC</option>
+                            <option value="Richland, SC">Richland, SC</option>
+                            <option value="Richmond, NC">Richmond, NC</option>
+                            <option value="Robeson, NC">Robeson, NC</option>
+                            <option value="Rockingham, NC">Rockingham, NC</option>
+                            <option value="Rowan, NC">Rowan, NC</option>
+                            <option value="Rutherford, NC">Rutherford, NC</option>
+                            <option value="Saluda, SC">Saluda, SC</option>
+                            <option value="Sampson, NC">Sampson, NC</option>
+                            <option value="Scotland, NC">Scotland, NC</option>
+                            <option value="Spartanburg, SC">Spartanburg, SC</option>
+                            <option value="Stanly, NC">Stanly, NC</option>
+                            <option value="Stokes, NC">Stokes, NC</option>
+                            <option value="Sumter, SC">Sumter, SC</option>
+                            <option value="Surry, NC">Surry, NC</option>
+                            <option value="Swain, NC">Swain, NC</option>
+                            <option value="Transylvania, NC">Transylvania, NC</option>
+                            <option value="Tyrell, NC">Tyrell, NC</option>
+                            <option value="Union, NC">Union, NC</option>
+                            <option value="Union, SC">Union, SC</option>
+                            <option value="Unknown, XX">Unknown, XX</option>
+                            <option value="Vance, NC">Vance, NC</option>
+                            <option value="Wake, NC">Wake, NC</option>
+                            <option value="Warren, NC">Warren, NC</option>
+                            <option value="Washington, NC">Washington, NC</option>
+                            <option value="Watauga, NC">Watauga, NC</option>
+                            <option value="Wayne, NC">Wayne, NC</option>
+                            <option value="Wilkes, NC">Wilkes, NC</option>
+                            <option value="Williamsburg, SC">Williamsburg, SC</option>
+                            <option value="Wilson, NC">Wilson, NC</option>
+                            <option value="Yadkin, NC">Yadkin, NC</option>
+                            <option value="Yancey, NC">Yancey, NC</option>
+                            <option value="York, SC">York, SC</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Request Details Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Request Details</h2>
+                    
+                    <div class="form-group">
+                        <label class="required">Request Type</label>
+                        <select id="requestType" name="requestType" required>
+                            <option value="">-- Select --</option>
+                            <option value="Bags of Hope">Bags of Hope</option>
+                            <option value="General Request">General Request</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Life Box">Life Box</option>
+                            <option value="Just Like You">Just Like You</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Completion Contact - Who should we contact when the request is ready?</label>
+                        <select id="completionContact" name="completionContact" required>
+                            <option value="">-- Select --</option>
+                            <option value="Caregiver">Caregiver</option>
+                            <option value="Social Worker">Social Worker</option>
+                            <option value="Person who completed the form">Person who completed the form</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Pick Up Location</label>
+                        <select id="pickupLocation" name="pickupLocation" required>
+                            <option value="">-- Select --</option>
+                            <option value="Belmont/Keith Hawthorne">Belmont/Keith Hawthorne</option>
+                            <option value="Buncombe County/Asheville">Buncombe County/Asheville</option>
+                            <option value="Burke County/Morganton - Jamestown Road">Burke County/Morganton - Jamestown Road</option>
+                            <option value="Catawba County/Hickory - S. Center Street">Catawba County/Hickory - S. Center Street</option>
+                            <option value="Cleveland County/Shelby - E. Dixon Blvd.">Cleveland County/Shelby - E. Dixon Blvd.</option>
+                            <option value="Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius">Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius</option>
+                            <option value="LOTC Office - S. Myrtle School Rd, Gastonia">LOTC Office - S. Myrtle School Rd, Gastonia</option>
+                            <option value="McDowell County/Marion - Worley Road">McDowell County/Marion - Worley Road</option>
+                            <option value="Hendrick Motors/Charlotte">Hendrick Motors/Charlotte</option>
+                            <option value="Mecklenburg County/Northlake">Mecklenburg County/Northlake</option>
+                            <option value="Rutherford County/Forest City">Rutherford County/Forest City</option>
+                            <option value="Stanly County/Albemarle - Aquadale Road">Stanly County/Albemarle - Aquadale Road</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Child Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Child Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Child's First Name</label>
+                            <input type="text" id="childFirstName" name="childFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Child's Last Initial</label>
+                            <input type="text" id="childLastInitial" name="childLastInitial" maxlength="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Placement Type</label>
+                        <select id="childPlacementType" name="childPlacementType" required>
+                            <option value="">-- Select --</option>
+                            <option value="Foster - Single Family Home">Foster - Single Family Home</option>
+                            <option value="Foster - Group Home placement">Foster - Group Home placement</option>
+                            <option value="Kinship">Kinship</option>
+                            <option value="Guardianship">Guardianship</option>
+                            <option value="Other (GAL, caseworker, etc.)">Other (GAL, caseworker, etc.)</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden" id="placementOtherGroup">
+                        <label>Please specify placement type</label>
+                        <input type="text" id="childPlacementOther" name="childPlacementOther">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Child's Nickname</label>
+                        <input type="text" id="childNickname" name="childNickname">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Gender</label>
+                        <select id="childGender" name="childGender" required>
+                            <option value="">-- Select --</option>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Age of Child</label>
+                        <select id="childAge" name="childAge" required>
+                            <option value="">-- Select --</option>
+                            <option value="<1">&lt;1</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Date of Birth</label>
+                        <input type="date" id="childDOB" name="childDOB" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Child's Ethnicity</label>
+                        <select id="childEthnicity" name="childEthnicity" required>
+                            <option value="">-- Select --</option>
+                            <option value="African-American">African-American</option>
+                            <option value="Asian">Asian</option>
+                            <option value="Bi-Racial">Bi-Racial</option>
+                            <option value="Caucasian">Caucasian</option>
+                            <option value="Hawaiian or Pacific Islander">Hawaiian or Pacific Islander</option>
+                            <option value="Hispanic">Hispanic</option>
+                            <option value="Middle Eastern">Middle Eastern</option>
+                            <option value="Multi-Racial">Multi-Racial</option>
+                            <option value="Native American">Native American</option>
+                            <option value="Don't Know/Prefer not to answer">Don't Know/Prefer not to answer</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Child's Siblings Names (first name and last initial only)</label>
+                        <textarea id="childSiblingsNames" name="childSiblingsNames" placeholder="Example: John D., Sarah D."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Are child's siblings in the same home as this child?</label>
+                        <select id="siblingsInSameHome" name="siblingsInSameHome">
+                            <option value="">-- Select --</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Additional Information</h2>
+                    
+                    <div class="form-group">
+                        <label>Additional Information (Required for General Request and Just Like You Scholarship)</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="5" placeholder="Please provide any additional details..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Terms Agreement -->
+                <div class="form-section">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                        <label for="agreeToTerms" class="checkbox-label">
+                            By submitting this request, I agree to receive text messages and/or emails from Least of These Carolinas. 
+                            To view our Privacy Policy, visit our website: 
+                            <a href="https://lotcarolinas.com/privacy-policy" target="_blank" rel="noopener noreferrer">
+                                https://lotcarolinas.com/privacy-policy
+                            </a>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Conditional field visibility
+        document.getElementById('relationship').addEventListener('change', function() {
+            const otherGroup = document.getElementById('relationshipOtherGroup');
+            otherGroup.classList.toggle('hidden', this.value !== 'Other');
+        });
+
+        document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const emailGroup = document.getElementById('caregiverEmailGroup');
+                const emailInput = document.getElementById('caregiverEmail');
+                if (this.value === 'yes') {
+                    emailGroup.classList.remove('hidden');
+                    emailInput.setAttribute('required', 'required');
+                } else {
+                    emailGroup.classList.add('hidden');
+                    emailInput.removeAttribute('required');
+                    emailInput.value = '';
+                }
+            });
+        });
+
+        document.getElementById('childPlacementType').addEventListener('change', function() {
+            const otherGroup = document.getElementById('placementOtherGroup');
+            otherGroup.classList.toggle('hidden', this.value !== 'Other');
+        });
+
+        // Form submission
+        document.getElementById('lotcForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Log form data (replace with actual submission logic)
+            console.log('Form submitted:', data);
+            
+            // Show success message
+            alert('Form submitted successfully! Thank you for your request.');
+            
+            // Optionally reset the form
+            // this.reset();
+            
+            // Here you would typically send the data to your server
+            // Example:
+            // fetch('/api/submit', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(data)
+            // })
+            // .then(response => response.json())
+            // .then(result => {
+            //     alert('Form submitted successfully!');
+            //     this.reset();
+            // })
+            // .catch(error => {
+            //     alert('Error submitting form. Please try again.');
+            //     console.error('Error:', error);
+            // });
+        });
+    </script>
+</body>
+</html>
