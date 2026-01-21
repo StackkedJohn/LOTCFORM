@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         /* Brand Colors from LOTC Guidelines */
         :root {
@@ -315,6 +318,43 @@
             display: none;
         }
 
+        /* Collapsible sections */
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-header:hover {
+            opacity: 0.8;
+        }
+
+        .collapse-icon {
+            font-size: 1.5rem;
+            color: var(--brand-red);
+            transition: transform 0.3s ease;
+            font-weight: 700;
+        }
+
+        .collapsible-header.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 1;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+        }
+
         /* Tablet breakpoint */
         @media (max-width: 992px) {
             .container {
@@ -398,6 +438,298 @@
                 font-size: 1.3rem;
             }
         }
+
+        /* Map Modal Styles */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(6, 5, 17, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map-modal.active {
+            display: flex;
+        }
+
+        .map-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            background: var(--brand-white);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-area {
+            flex: 1;
+            position: relative;
+        }
+
+        #pickupMap {
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-sidebar {
+            width: 350px;
+            background: var(--brand-white);
+            border-left: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .map-sidebar-header {
+            padding: 20px;
+            background: var(--brand-red);
+            color: var(--brand-white);
+        }
+
+        .map-sidebar-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .map-sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .map-sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .location-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .location-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .location-item.selected {
+            background-color: rgba(194, 32, 53, 0.1);
+            border-left: 4px solid var(--brand-red);
+        }
+
+        .location-item-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .location-rank {
+            width: 24px;
+            height: 24px;
+            background: var(--brand-red);
+            color: var(--brand-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .location-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--brand-black);
+        }
+
+        .location-address {
+            font-size: 0.85rem;
+            color: var(--brand-grey);
+            margin-bottom: 6px;
+            padding-left: 34px;
+        }
+
+        .location-distance {
+            font-size: 0.85rem;
+            color: var(--brand-red);
+            font-weight: 600;
+            padding-left: 34px;
+        }
+
+        .map-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+
+        .map-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .map-btn-primary {
+            background-color: var(--brand-red);
+            color: var(--brand-white);
+        }
+
+        .map-btn-primary:hover {
+            background-color: #a01929;
+        }
+
+        .map-btn-primary:disabled {
+            background-color: var(--brand-grey);
+            cursor: not-allowed;
+        }
+
+        .map-btn-secondary {
+            background-color: #f3f4f6;
+            color: var(--brand-black);
+        }
+
+        .map-btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .map-close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 36px;
+            height: 36px;
+            background: var(--brand-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--brand-black);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .map-close-btn:hover {
+            background-color: #f3f4f6;
+        }
+
+        .user-location-label {
+            background: var(--brand-red);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .pickup-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--brand-blue);
+            color: var(--brand-black);
+            border: 2px solid var(--brand-blue);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .pickup-btn:hover {
+            background-color: #6a9bc4;
+            border-color: #6a9bc4;
+        }
+
+        .selected-location-display {
+            margin-top: 10px;
+            padding: 12px 16px;
+            background-color: #f0f9ff;
+            border: 2px solid var(--brand-blue);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .selected-location-display.active {
+            display: block;
+        }
+
+        .selected-location-display strong {
+            color: var(--brand-red);
+        }
+
+        /* Map marker styles */
+        .marker-user {
+            width: 30px;
+            height: 30px;
+            background-color: var(--brand-red);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .marker-pickup {
+            font-size: 28px;
+            line-height: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .mapboxgl-popup-content {
+            padding: 12px 16px;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 8px;
+        }
+
+        .mapboxgl-popup-content h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--brand-black);
+        }
+
+        .mapboxgl-popup-content p {
+            font-size: 0.85rem;
+            color: var(--brand-grey);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .map-container {
+                flex-direction: column;
+                height: 90vh;
+                width: 95%;
+            }
+
+            .map-area {
+                height: 50%;
+            }
+
+            .map-sidebar {
+                width: 100%;
+                height: 50%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -447,10 +779,14 @@
                 </div>
 
                 <!-- Caregiver Section -->
-                <div class="form-section">
-                    <h2 class="section-title">Caregiver Information</h2>
+                <div class="form-section" id="caregiverSection">
+                    <div class="collapsible-header collapsed" onclick="toggleCollapsible(this)">
+                        <h2 class="section-title" style="margin-bottom: 0;">Caregiver Information</h2>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content collapsed">
 
-                    <div class="form-row">
+                    <div class="form-row" style="margin-top: 18px;">
                         <div class="form-group">
                             <label class="required">First Name</label>
                             <input type="text" id="caregiverFirstName" name="caregiverFirstName" required>
@@ -535,13 +871,32 @@
                             <option value="Do not know">Do not know</option>
                         </select>
                     </div>
+
+                    <div class="form-group hidden" id="socialWorkerInfoQuestion">
+                        <label class="required">Do you have the information for the social worker?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" id="hasSocialWorkerInfoYes" name="hasSocialWorkerInfo" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" id="hasSocialWorkerInfoNo" name="hasSocialWorkerInfo" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    </div>
                 </div>
 
                 <!-- Social Worker Section -->
-                <div class="form-section">
-                    <h2 class="section-title">DSS Social Worker Information</h2>
+                <div class="form-section" id="socialWorkerSection">
+                    <div class="collapsible-header collapsed" onclick="toggleCollapsible(this)">
+                        <h2 class="section-title" style="margin-bottom: 0;">DSS Social Worker Information</h2>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content collapsed">
 
-                    <div class="form-row">
+                    <div class="form-row" style="margin-top: 18px;">
                         <div class="form-group">
                             <label class="required">First Name</label>
                             <input type="text" id="socialWorkerFirstName" name="socialWorkerFirstName" required>
@@ -747,6 +1102,21 @@
                             <option value="Other">Other</option>
                         </select>
                     </div>
+
+                    <div class="form-group hidden" id="caregiverInfoQuestion">
+                        <label class="required">Do you have the caregiver information?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" id="hasCaregiverInfoYes" name="hasCaregiverInfo" value="yes">
+                                Yes
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" id="hasCaregiverInfoNo" name="hasCaregiverInfo" value="no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    </div>
                 </div>
 
                 <!-- Request Details Section -->
@@ -763,7 +1133,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="pickupLocationGroup">
                         <label class="required">Pick Up Location</label>
                         <select id="pickupLocation" name="pickupLocation" required>
                             <option value="">-- Select --</option>
@@ -780,6 +1150,12 @@
                             <option value="Rutherford County/Forest City">Rutherford County/Forest City</option>
                             <option value="Stanly County/Albemarle - Aquadale Road">Stanly County/Albemarle - Aquadale Road</option>
                         </select>
+                        <button type="button" id="openMapBtn" class="pickup-btn hidden">
+                            View Nearest Locations on Map
+                        </button>
+                        <div id="selectedLocationDisplay" class="selected-location-display">
+                            <strong>Selected:</strong> <span id="selectedLocationText"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -883,7 +1259,37 @@
         </div>
     </div>
 
+    <!-- Map Modal -->
+    <div id="mapModal" class="map-modal">
+        <div class="map-container">
+            <div class="map-area">
+                <button type="button" class="map-close-btn" id="closeMapBtn">&times;</button>
+                <div id="pickupMap"></div>
+            </div>
+            <div class="map-sidebar">
+                <div class="map-sidebar-header">
+                    <h3>Nearest Pickup Locations</h3>
+                    <p>Select a location that works best for you</p>
+                </div>
+                <div class="map-sidebar-content" id="locationsList">
+                    <!-- Locations will be populated dynamically -->
+                </div>
+                <div class="map-sidebar-footer">
+                    <button type="button" class="map-btn map-btn-secondary" id="cancelMapBtn">Cancel</button>
+                    <button type="button" class="map-btn map-btn-primary" id="confirmLocationBtn" disabled>Confirm Selection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Toggle collapsible sections
+        function toggleCollapsible(header) {
+            header.classList.toggle('collapsed');
+            const content = header.nextElementSibling;
+            content.classList.toggle('collapsed');
+        }
+
         // Conditional field visibility
         document.querySelectorAll('input[name="knowCaregiverEmail"]').forEach(radio => {
             radio.addEventListener('change', function() {
@@ -1112,6 +1518,140 @@
             }
         });
 
+        // Relationship dropdown - auto-expand sections based on selection
+        document.getElementById('relationship').addEventListener('change', function() {
+            const caregiverSection = document.getElementById('caregiverSection');
+            const caregiverHeader = caregiverSection.querySelector('.collapsible-header');
+            const caregiverContent = caregiverSection.querySelector('.collapsible-content');
+
+            const socialWorkerSection = document.getElementById('socialWorkerSection');
+            const socialWorkerHeader = socialWorkerSection.querySelector('.collapsible-header');
+            const socialWorkerContent = socialWorkerSection.querySelector('.collapsible-content');
+
+            const socialWorkerInfoQuestion = document.getElementById('socialWorkerInfoQuestion');
+            const hasSocialWorkerInfoRadios = document.querySelectorAll('input[name="hasSocialWorkerInfo"]');
+
+            const caregiverInfoQuestion = document.getElementById('caregiverInfoQuestion');
+            const hasCaregiverInfoRadios = document.querySelectorAll('input[name="hasCaregiverInfo"]');
+
+            // Get the parent container for reordering
+            const relationshipSection = document.querySelector('.form-section:has(#relationship)');
+
+            if (this.value === 'Caregiver') {
+                // Reorder: Caregiver section first, then Social Worker section
+                relationshipSection.after(caregiverSection);
+                caregiverSection.after(socialWorkerSection);
+
+                // Expand Caregiver section
+                caregiverHeader.classList.remove('collapsed');
+                caregiverContent.classList.remove('collapsed');
+
+                // Show the social worker info question (in caregiver section)
+                socialWorkerInfoQuestion.classList.remove('hidden');
+
+                // Hide the caregiver info question (in social worker section)
+                caregiverInfoQuestion.classList.add('hidden');
+                hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
+
+                // Collapse DSS Social Worker section until user answers the question
+                socialWorkerHeader.classList.add('collapsed');
+                socialWorkerContent.classList.add('collapsed');
+
+                // Clear the social worker info radio selection
+                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
+
+            } else if (this.value === 'DSS Social Worker') {
+                // Reorder: Social Worker section first, then Caregiver section
+                relationshipSection.after(socialWorkerSection);
+                socialWorkerSection.after(caregiverSection);
+
+                // Expand DSS Social Worker section
+                socialWorkerHeader.classList.remove('collapsed');
+                socialWorkerContent.classList.remove('collapsed');
+
+                // Show the caregiver info question (in social worker section)
+                caregiverInfoQuestion.classList.remove('hidden');
+
+                // Hide the social worker info question (in caregiver section)
+                socialWorkerInfoQuestion.classList.add('hidden');
+                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
+
+                // Collapse Caregiver section until user answers the question
+                caregiverHeader.classList.add('collapsed');
+                caregiverContent.classList.add('collapsed');
+
+                // Clear the caregiver info radio selection
+                hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
+
+            } else if (this.value === 'Other (GAL, case worker, etc.)') {
+                // Reset order: Caregiver first, then Social Worker
+                relationshipSection.after(caregiverSection);
+                caregiverSection.after(socialWorkerSection);
+
+                // Collapse both sections, hide both questions
+                caregiverHeader.classList.add('collapsed');
+                caregiverContent.classList.add('collapsed');
+                socialWorkerHeader.classList.add('collapsed');
+                socialWorkerContent.classList.add('collapsed');
+                socialWorkerInfoQuestion.classList.add('hidden');
+                caregiverInfoQuestion.classList.add('hidden');
+                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
+                hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
+
+            } else {
+                // No selection - reset order, collapse both, hide questions
+                relationshipSection.after(caregiverSection);
+                caregiverSection.after(socialWorkerSection);
+
+                caregiverHeader.classList.add('collapsed');
+                caregiverContent.classList.add('collapsed');
+                socialWorkerHeader.classList.add('collapsed');
+                socialWorkerContent.classList.add('collapsed');
+                socialWorkerInfoQuestion.classList.add('hidden');
+                caregiverInfoQuestion.classList.add('hidden');
+                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
+                hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
+            }
+        });
+
+        // Handle "Do you have social worker info?" question (in Caregiver section)
+        document.querySelectorAll('input[name="hasSocialWorkerInfo"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const socialWorkerSection = document.getElementById('socialWorkerSection');
+                const socialWorkerHeader = socialWorkerSection.querySelector('.collapsible-header');
+                const socialWorkerContent = socialWorkerSection.querySelector('.collapsible-content');
+
+                if (this.value === 'yes') {
+                    // Expand DSS Social Worker section
+                    socialWorkerHeader.classList.remove('collapsed');
+                    socialWorkerContent.classList.remove('collapsed');
+                } else {
+                    // Collapse DSS Social Worker section
+                    socialWorkerHeader.classList.add('collapsed');
+                    socialWorkerContent.classList.add('collapsed');
+                }
+            });
+        });
+
+        // Handle "Do you have caregiver info?" question (in Social Worker section)
+        document.querySelectorAll('input[name="hasCaregiverInfo"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const caregiverSection = document.getElementById('caregiverSection');
+                const caregiverHeader = caregiverSection.querySelector('.collapsible-header');
+                const caregiverContent = caregiverSection.querySelector('.collapsible-content');
+
+                if (this.value === 'yes') {
+                    // Expand Caregiver section
+                    caregiverHeader.classList.remove('collapsed');
+                    caregiverContent.classList.remove('collapsed');
+                } else {
+                    // Collapse Caregiver section
+                    caregiverHeader.classList.add('collapsed');
+                    caregiverContent.classList.add('collapsed');
+                }
+            });
+        });
+
         // Form submission with loading state and error handling
         document.getElementById('lotcForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1168,6 +1708,338 @@
                 // Re-enable submit button
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Request';
+            }
+        });
+
+        // ===== MAPBOX PICKUP LOCATION SELECTOR =====
+
+        // Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWR1YjIzOSIsImEiOiJjbWIwY2w2b20wYnAzMm5vbXJnZTc1bmI0In0.XdWLt81DSSiTTM52dGowEA';
+
+        // Pickup location data with coordinates
+        const pickupLocations = [
+            {
+                id: 'belmont',
+                name: 'Belmont/Keith Hawthorne',
+                address: '617 North Main Street, Belmont, NC 28012',
+                coords: [-81.0387, 35.2431]
+            },
+            {
+                id: 'asheville',
+                name: 'Buncombe County/Asheville',
+                address: '40 Coxe Avenue, Asheville, NC 28801 (DSS)',
+                coords: [-82.5540, 35.5923]
+            },
+            {
+                id: 'morganton',
+                name: 'Burke County/Morganton - Jamestown Road',
+                address: '700 East Parker Road, Morganton, NC 28680 (DSS)',
+                coords: [-81.6848, 35.7596]
+            },
+            {
+                id: 'hickory',
+                name: 'Catawba County/Hickory - S. Center Street',
+                address: '3030 11th Avenue Drive SE, Hickory, NC 28602 (DSS)',
+                coords: [-81.3090, 35.7087]
+            },
+            {
+                id: 'shelby',
+                name: 'Cleveland County/Shelby - E. Dixon Blvd.',
+                address: '200 S. Post Road, Shelby, NC 28152 (DSS)',
+                coords: [-81.5357, 35.2824]
+            },
+            {
+                id: 'cornelius',
+                name: 'Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius',
+                address: '20700 Torrence Chapel Road, Cornelius, NC 28031',
+                coords: [-80.8601, 35.4627]
+            },
+            {
+                id: 'gastonia',
+                name: 'LOTC Office - S. Myrtle School Rd, Gastonia',
+                address: '1000 S. Myrtle School Road, Gastonia, NC 28052',
+                coords: [-81.1540, 35.2271]
+            },
+            {
+                id: 'marion',
+                name: 'McDowell County/Marion - Worley Road',
+                address: '145 E. Court Street, Marion, NC 28752 (DSS)',
+                coords: [-82.0091, 35.6837]
+            },
+            {
+                id: 'charlotte-hendrick',
+                name: 'Hendrick Motors/Charlotte',
+                address: '5201 E. Independence Blvd, Charlotte, NC 28212',
+                coords: [-80.7581, 35.1977]
+            },
+            {
+                id: 'charlotte-northlake',
+                name: 'Mecklenburg County/Northlake',
+                address: '430 Stitt Road, Charlotte, NC 28213 (Ella B. Scarborough Community Resource Center)',
+                coords: [-80.8574, 35.3113]
+            },
+            {
+                id: 'spindale',
+                name: 'Rutherford County/Forest City',
+                address: '389 Fairground Road, Spindale, NC 28160 (DSS)',
+                coords: [-81.9288, 35.3543]
+            },
+            {
+                id: 'albemarle',
+                name: 'Stanly County/Albemarle - Aquadale Road',
+                address: '1000 N. First St., Suite 2, Albemarle, NC 28001 (DSS)',
+                coords: [-80.1983, 35.3596]
+            }
+        ];
+
+        // Map variables
+        let map = null;
+        let userMarker = null;
+        let pickupMarkers = [];
+        let selectedLocation = null;
+        let userCoords = null;
+
+        // Calculate distance between two points using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Geocode address using Mapbox Geocoding API
+        async function geocodeAddress(address) {
+            const encodedAddress = encodeURIComponent(address);
+            const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodedAddress}.json?access_token=${mapboxgl.accessToken}&country=US&limit=1`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.features && data.features.length > 0) {
+                    return data.features[0].center; // Returns [lng, lat]
+                }
+                return null;
+            } catch (error) {
+                console.error('Geocoding error:', error);
+                return null;
+            }
+        }
+
+        // Initialize and show the map
+        function initializeMap(userLng, userLat) {
+            userCoords = [userLng, userLat];
+
+            // Calculate distances and sort locations
+            const locationsWithDistance = pickupLocations.map(loc => ({
+                ...loc,
+                distance: calculateDistance(userLat, userLng, loc.coords[1], loc.coords[0])
+            })).sort((a, b) => a.distance - b.distance);
+
+            // Take top 5 closest locations
+            const top5Locations = locationsWithDistance.slice(0, 5);
+
+            // Create the map
+            if (map) {
+                map.remove();
+            }
+
+            map = new mapboxgl.Map({
+                container: 'pickupMap',
+                style: 'mapbox://styles/mapbox/streets-v12',
+                center: userCoords,
+                zoom: 9
+            });
+
+            map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+            map.on('load', () => {
+                // Add user location marker (red dot)
+                const userEl = document.createElement('div');
+                userEl.className = 'marker-user';
+
+                userMarker = new mapboxgl.Marker(userEl)
+                    .setLngLat(userCoords)
+                    .setPopup(new mapboxgl.Popup({ offset: 25 })
+                        .setHTML('<h4>You Are Here</h4><p>Caregiver\'s Address</p>'))
+                    .addTo(map);
+
+                // Add pickup location markers (gold stars)
+                pickupMarkers = [];
+                locationsWithDistance.forEach((loc, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'marker-pickup';
+                    el.innerHTML = '⭐';
+                    el.style.cursor = 'pointer';
+
+                    const marker = new mapboxgl.Marker(el)
+                        .setLngLat(loc.coords)
+                        .setPopup(new mapboxgl.Popup({ offset: 25 })
+                            .setHTML(`<h4>${loc.name}</h4><p>${loc.address}</p><p style="color: #c22035; font-weight: 600;">${loc.distance.toFixed(1)} miles away</p>`))
+                        .addTo(map);
+
+                    el.addEventListener('click', () => {
+                        selectLocation(loc);
+                    });
+
+                    pickupMarkers.push({ marker, location: loc });
+                });
+
+                // Fit bounds to show user and top 5 locations
+                const bounds = new mapboxgl.LngLatBounds();
+                bounds.extend(userCoords);
+                top5Locations.forEach(loc => bounds.extend(loc.coords));
+                map.fitBounds(bounds, { padding: 50 });
+            });
+
+            // Populate sidebar with top 5 locations
+            populateLocationsList(top5Locations);
+        }
+
+        // Populate the locations sidebar
+        function populateLocationsList(locations) {
+            const listContainer = document.getElementById('locationsList');
+            listContainer.innerHTML = '';
+
+            locations.forEach((loc, index) => {
+                const item = document.createElement('div');
+                item.className = 'location-item';
+                item.dataset.locationId = loc.id;
+                item.innerHTML = `
+                    <div class="location-item-header">
+                        <span class="location-rank">${index + 1}</span>
+                        <span class="location-name">${loc.name}</span>
+                    </div>
+                    <div class="location-address">${loc.address}</div>
+                    <div class="location-distance">${loc.distance.toFixed(1)} miles away</div>
+                `;
+                item.addEventListener('click', () => selectLocation(loc));
+                listContainer.appendChild(item);
+            });
+        }
+
+        // Select a location
+        function selectLocation(location) {
+            selectedLocation = location;
+
+            // Update sidebar selection
+            document.querySelectorAll('.location-item').forEach(item => {
+                item.classList.remove('selected');
+                if (item.dataset.locationId === location.id) {
+                    item.classList.add('selected');
+                }
+            });
+
+            // Enable confirm button
+            document.getElementById('confirmLocationBtn').disabled = false;
+
+            // Center map on selected location
+            if (map) {
+                map.flyTo({ center: location.coords, zoom: 12 });
+
+                // Open the popup for this marker
+                pickupMarkers.forEach(pm => {
+                    if (pm.location.id === location.id) {
+                        pm.marker.togglePopup();
+                    }
+                });
+            }
+        }
+
+        // Open the map modal
+        async function openMapModal() {
+            const modal = document.getElementById('mapModal');
+
+            // Get caregiver's address
+            const street = document.getElementById('caregiverStreet').value;
+            const city = document.getElementById('caregiverCity').value;
+            const state = document.getElementById('caregiverState').value;
+            const zip = document.getElementById('caregiverZip').value;
+
+            if (!street || !city || !state || !zip) {
+                alert('Please complete the caregiver\'s address first.');
+                return;
+            }
+
+            const fullAddress = `${street}, ${city}, ${state} ${zip}`;
+
+            // Show modal
+            modal.classList.add('active');
+
+            // Show loading state
+            document.getElementById('locationsList').innerHTML = '<div style="padding: 20px; text-align: center;">Loading map...</div>';
+
+            // Geocode the address
+            const coords = await geocodeAddress(fullAddress);
+
+            if (coords) {
+                initializeMap(coords[0], coords[1]);
+            } else {
+                document.getElementById('locationsList').innerHTML = '<div style="padding: 20px; text-align: center; color: #c22035;">Could not find address. Please check and try again.</div>';
+            }
+        }
+
+        // Close the map modal
+        function closeMapModal() {
+            const modal = document.getElementById('mapModal');
+            modal.classList.remove('active');
+            selectedLocation = null;
+            document.getElementById('confirmLocationBtn').disabled = true;
+        }
+
+        // Confirm location selection
+        function confirmLocationSelection() {
+            if (selectedLocation) {
+                // Update the dropdown
+                const dropdown = document.getElementById('pickupLocation');
+                const options = dropdown.options;
+
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === selectedLocation.name ||
+                        options[i].text.includes(selectedLocation.name.split('/')[0])) {
+                        dropdown.selectedIndex = i;
+                        break;
+                    }
+                }
+
+                // Update the display
+                const displayEl = document.getElementById('selectedLocationDisplay');
+                const textEl = document.getElementById('selectedLocationText');
+                textEl.textContent = `${selectedLocation.name} - ${selectedLocation.address} (${selectedLocation.distance.toFixed(1)} miles)`;
+                displayEl.classList.add('active');
+
+                closeMapModal();
+            }
+        }
+
+        // Event listeners for completion contact
+        document.getElementById('completionContact').addEventListener('change', function() {
+            const openMapBtn = document.getElementById('openMapBtn');
+
+            if (this.value === 'Caregiver') {
+                // Show the map button
+                openMapBtn.classList.remove('hidden');
+            } else {
+                // Hide the map button
+                openMapBtn.classList.add('hidden');
+            }
+        });
+
+        // Event listeners for map modal
+        document.getElementById('openMapBtn').addEventListener('click', openMapModal);
+        document.getElementById('closeMapBtn').addEventListener('click', closeMapModal);
+        document.getElementById('cancelMapBtn').addEventListener('click', closeMapModal);
+        document.getElementById('confirmLocationBtn').addEventListener('click', confirmLocationSelection);
+
+        // Close modal when clicking outside
+        document.getElementById('mapModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMapModal();
             }
         });
     </script>
