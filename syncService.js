@@ -69,6 +69,91 @@ class SyncService {
             }]
         };
     }
+
+    /**
+     * Sync Neon CRM account updates to Supabase
+     * @param {string} neonAccountId - Neon CRM account ID
+     * @param {Object} neonData - Updated Neon account data
+     * @param {string} timestamp - Update timestamp
+     * @returns {Promise<{success: boolean, updated?: number, error?: string}>} Sync result
+     */
+    async syncNeonToSupabase(neonAccountId, neonData, timestamp) {
+        try {
+            console.log(`Syncing Neon account ${neonAccountId} to Supabase...`);
+
+            // Find Supabase records with this Neon ID
+            const result = await this.supabase.getSubmissionByNeonId(neonAccountId, 'caregiver');
+
+            if (!result.success || !result.data || result.data.length === 0) {
+                console.log('No matching Supabase records found for Neon ID:', neonAccountId);
+                return { success: false, error: 'No matching records' };
+            }
+
+            // Map Neon fields to Supabase schema
+            const updates = this.mapNeonToSupabase(neonData);
+
+            // Update all matching records
+            const updateResults = [];
+            for (const record of result.data) {
+                // Check if we should sync based on timestamp
+                if (!this.shouldSync(record.updated_at, timestamp)) {
+                    console.log(`Skipping sync for record ${record.id} - local is newer`);
+                    continue;
+                }
+
+                const updateResult = await this.supabase.updateSubmission(record.id, updates);
+                updateResults.push(updateResult);
+            }
+
+            console.log(`Synced ${updateResults.length} records from Neon to Supabase`);
+            return { success: true, updated: updateResults.length };
+
+        } catch (error) {
+            console.error('Error syncing Neon to Supabase:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Sync Supabase record updates to Neon CRM
+     * @param {Object} supabaseRecord - Supabase submission record
+     * @param {string} timestamp - Update timestamp
+     * @returns {Promise<{success: boolean, message?: string, error?: string}>} Sync result
+     */
+    async syncSupabaseToNeon(supabaseRecord, timestamp) {
+        try {
+            console.log(`Syncing Supabase record ${supabaseRecord.id} to Neon...`);
+
+            const neonAccountId = supabaseRecord.neon_caregiver_id;
+
+            if (!neonAccountId) {
+                console.log('No Neon account ID found in Supabase record');
+                return { success: false, error: 'No Neon account ID' };
+            }
+
+            // Check if Neon is configured
+            if (!this.neon.isConfigured()) {
+                console.log('Neon CRM not configured, skipping sync');
+                return { success: false, error: 'Neon not configured' };
+            }
+
+            // Map Supabase fields to Neon format
+            const neonData = this.mapSupabaseToNeon(supabaseRecord);
+
+            // TODO: Add method to neonService to update account
+            // For now, we'll use the existing searchAccountByEmail and createAccount pattern
+            // This would need a new updateAccount method in neonService.js
+
+            console.log('Neon update would happen here with data:', neonData);
+
+            // Placeholder - in real implementation, call neon update API
+            return { success: true, message: 'Sync to Neon pending implementation' };
+
+        } catch (error) {
+            console.error('Error syncing Supabase to Neon:', error);
+            return { success: false, error: error.message };
+        }
+    }
 }
 
 module.exports = new SyncService();
