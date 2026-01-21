@@ -174,6 +174,42 @@ try {
 }
 ```
 
+## Supabase Integration
+
+The form now syncs data to Supabase in addition to Neon CRM. This enables:
+- Centralized database for all form submissions
+- Bidirectional sync between Neon CRM and Supabase
+- Access to form data from other applications
+
+### Setup
+
+1. Create Supabase project at https://supabase.com
+2. Run schema from `docs/supabase-schema.sql`
+3. Configure database webhooks (see `docs/SUPABASE_SETUP.md`)
+4. Add environment variables:
+   ```
+   SUPABASE_URL=your-project-url
+   SUPABASE_SERVICE_KEY=your-service-key
+   SUPABASE_WEBHOOK_SECRET=your-secret
+   ```
+
+### Features
+
+- **Form Submission**: Automatically saves to Supabase with Neon IDs
+- **Neon → Supabase Sync**: Updates propagate from Neon to Supabase
+- **Supabase → Neon Sync**: Updates propagate from Supabase to Neon
+- **Conflict Resolution**: Last write wins (timestamp-based)
+- **Graceful Degradation**: Form succeeds even if sync fails
+
+### Testing
+
+See `docs/TESTING_SYNC.md` for comprehensive testing guide.
+
+### Webhook Endpoints
+
+- **POST /api/neon-webhook** - Receives Neon CRM updates
+- **POST /api/supabase-webhook** - Receives Supabase updates
+
 ## Troubleshooting
 
 ### Port Already in Use
