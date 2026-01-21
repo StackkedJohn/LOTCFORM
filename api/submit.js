@@ -1,4 +1,5 @@
 const neonService = require('../neonService');
+const supabaseService = require('../supabaseService');
 const fs = require('fs');
 const path = require('path');
 
@@ -96,12 +97,33 @@ module.exports = async (req, res) => {
             console.log('Neon CRM not configured, skipping API submission');
         }
 
+        // Submit to Supabase if configured
+        let supabaseResult = null;
+        if (supabaseService.isConfigured()) {
+            try {
+                console.log('Submitting form data to Supabase...');
+                supabaseResult = await supabaseService.insertSubmission({
+                    submissionId: filename,
+                    neonCaregiverId: neonResult?.caregiverAccountId || null,
+                    neonSocialWorkerId: neonResult?.socialWorkerAccountId || null,
+                    ...formData
+                });
+                console.log('Successfully submitted to Supabase:', supabaseResult);
+            } catch (supabaseError) {
+                console.error('Failed to submit to Supabase, but local backup saved:', supabaseError);
+            }
+        } else {
+            console.log('Supabase not configured, skipping database submission');
+        }
+
         res.status(200).json({
             success: true,
             message: 'Form submitted successfully!',
             submissionId: filename,
             neonSubmitted: neonResult ? true : false,
-            neonDetails: neonResult || null
+            neonDetails: neonResult || null,
+            supabaseSubmitted: supabaseResult?.success || false,
+            supabaseId: supabaseResult?.data?.id || null
         });
 
     } catch (error) {
