@@ -9,6 +9,7 @@ create table submissions (
   -- Neon CRM IDs (for sync)
   neon_caregiver_id text,
   neon_social_worker_id text,
+  neon_service_id text,
 
   -- Request information
   request_type text not null,
@@ -57,6 +58,7 @@ create table submissions (
 -- Indexes for performance
 create index idx_submissions_neon_caregiver on submissions(neon_caregiver_id);
 create index idx_submissions_neon_social_worker on submissions(neon_social_worker_id);
+create index idx_submissions_neon_service on submissions(neon_service_id);
 create index idx_submissions_updated_at on submissions(updated_at);
 create index idx_submissions_submission_id on submissions(submission_id);
 

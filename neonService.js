@@ -233,8 +233,11 @@ class NeonService {
                 }
             });
 
-            const response = await this.clientV1.get('/customObjectRecord/createCustomObjectRecord', {
-                params: params
+            // Use POST with form data (not GET with query params) to avoid URL length limits
+            const response = await this.clientV1.post('/customObjectRecord/createCustomObjectRecord', params, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
 
             if (response.data?.createCustomObjectRecordResponse?.operationResult === 'SUCCESS') {

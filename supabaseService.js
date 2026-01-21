@@ -84,6 +84,7 @@ class SupabaseService {
                 submission_id: data.submissionId,
                 neon_caregiver_id: data.neonCaregiverId || null,
                 neon_social_worker_id: data.neonSocialWorkerId || null,
+                neon_service_id: data.neonServiceId || null,
 
                 // Request information
                 request_type: data.requestType,

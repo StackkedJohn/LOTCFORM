@@ -106,6 +106,7 @@ module.exports = async (req, res) => {
                     submissionId: filename,
                     neonCaregiverId: neonResult?.caregiverAccountId || null,
                     neonSocialWorkerId: neonResult?.socialWorkerAccountId || null,
+                    neonServiceId: neonResult?.serviceRecordId || null,
                     ...formData
                 });
                 console.log('Successfully submitted to Supabase:', supabaseResult);
