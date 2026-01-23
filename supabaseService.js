@@ -112,7 +112,8 @@ class SupabaseService {
 
                 // Child information
                 child_first_name: data.childFirstName,
-                child_last_initial: data.childLastInitial,
+                child_last_name: data.childLastName || data.childLastInitial || null,
+                child_last_initial: data.childLastInitial || (data.childLastName ? data.childLastName.charAt(0) : null),
                 child_age: data.childAge,
                 child_dob: data.childDOB,
                 child_gender: data.childGender,

@@ -37,6 +37,7 @@ create table submissions (
 
   -- Child information
   child_first_name text not null,
+  child_last_name text not null,
   child_last_initial text not null,
   child_age text not null,
   child_dob date not null,

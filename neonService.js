@@ -275,7 +275,7 @@ class NeonService {
 
                 childAccount = await this.getOrCreateAccount({
                     firstName: formData.childFirstName,
-                    lastName: formData.childLastInitial
+                    lastName: formData.childLastName || formData.childLastInitial
                     // Don't send DOB/gender for now - causing JSON errors
                 });
                 console.log('Child account:', childAccount?.accountId || childAccount?.id);
