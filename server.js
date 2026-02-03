@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-// Import Neon CRM service
+// Import Neon CRM and Supabase services
 const neonService = require('./neonService');
+const supabaseService = require('./supabaseService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,34 +47,14 @@ app.post('/api/submit', async (req, res) => {
 
         // Validate required fields - conditional based on checkbox
         const baseRequiredFields = [
-            'requestType',
-            'relationship',
-            'caregiverFirstName',
-            'caregiverLastName',
-            'knowCaregiverEmail',
-            'caregiverStreet',
-            'caregiverCity',
-            'caregiverState',
-            'caregiverZip',
-            'caregiverCounty',
-            'isLicensedFoster',
-            'socialWorkerFirstName',
-            'socialWorkerLastName',
-            'socialWorkerEmail',
-            'socialWorkerCounty',
-            'completionContact',
-            'pickupLocation',
-            'childFirstName',
-            'childLastInitial',
-            'childPlacementType',
-            'childGender',
-            'childAge',
-            'childDOB',
-            'childEthnicity',
-            'agreeToTerms'
+            'requestType', 'relationship', 'caregiverFirstName', 'caregiverLastName',
+            'caregiverStreet', 'caregiverZip', 'caregiverCity', 'caregiverState', 'caregiverCounty',
+            'socialWorkerFirstName', 'socialWorkerLastName', 'socialWorkerEmail', 'socialWorkerCounty',
+            'completionContact', 'pickupDate', 'pickupTime', 'pickupLocation', 'childFirstName', 'childLastName',
+            'childPlacementType', 'childGender', 'childAge', 'childDOB', 'childEthnicity', 'childCustodyCounty',
+            'isLicensedFoster', 'agreeToTerms'
         ];
 
-        // Conditionally require phone based on checkboxes
         let requiredFields = [...baseRequiredFields];
 
         // Caregiver phone requirement
@@ -88,6 +69,59 @@ app.post('/api/submit', async (req, res) => {
             requiredFields.push('alternativeSocialWorkerPhone');
         } else {
             requiredFields.push('socialWorkerPhone');
+        }
+
+        // Caregiver email requirement
+        if (formData.knowCaregiverEmail === 'yes') {
+            requiredFields.push('caregiverEmail');
+        }
+
+        // General Request sub-type requirement
+        if (formData.requestType === 'General Request') {
+            requiredFields.push('generalRequestSubType');
+        }
+
+        // Bags of Hope clothing sizes requirement
+        if (formData.requestType === 'Bags of Hope') {
+            requiredFields.push('shirtSize', 'pantSize', 'sockShoeSize', 'undergarmentSize', 'diaperSize');
+        }
+
+        // Bed request reason requirement
+        if (formData.generalRequestSubType === 'Bed') {
+            requiredFields.push('bedReason');
+        }
+
+        // Shoes of Hope requirements
+        if (formData.requestType === 'Shoes of Hope') {
+            requiredFields.push('childGradeFall', 'shoeGender', 'underwearGender');
+
+            if (formData.shoeGender === 'Girl') {
+                requiredFields.push('girlShoeSize');
+            } else if (formData.shoeGender === 'Boy') {
+                requiredFields.push('boyShoeSize');
+            }
+
+            if (formData.underwearGender === 'Girl') {
+                requiredFields.push('girlsUnderwearSize');
+            } else if (formData.underwearGender === 'Boy') {
+                requiredFields.push('boysUnderwearSize');
+            }
+        }
+
+        // Group Home fields requirement
+        if (formData.childPlacementType === 'Foster - Group Home placement') {
+            requiredFields.push('groupHomeName', 'groupHomePhone');
+        }
+
+        // Person Completing Form fields requirement
+        if (formData.relationship && formData.relationship.includes('Other')) {
+            requiredFields.push('personCompletingFirstName', 'personCompletingLastName',
+                              'personCompletingPhone', 'personCompletingTextable', 'personCompletingEmail');
+        }
+
+        // Licensing Agency requirement
+        if (formData.isLicensedFoster === 'Yes') {
+            requiredFields.push('licensingAgency');
         }
 
         // Check for missing required fields
@@ -124,11 +158,29 @@ app.post('/api/submit', async (req, res) => {
                 console.log('Successfully submitted to Neon CRM:', neonResult);
             } catch (neonError) {
                 console.error('Failed to submit to Neon CRM, but local backup saved:', neonError);
-                // Continue with success response since we saved locally
-                // Log the error for manual review
             }
         } else {
             console.log('Neon CRM not configured - skipping Neon submission');
+        }
+
+        // Submit to Supabase if configured
+        let supabaseResult = null;
+        if (supabaseService.isConfigured()) {
+            try {
+                console.log('Submitting form data to Supabase...');
+                supabaseResult = await supabaseService.insertSubmission({
+                    submissionId: filename,
+                    neonCaregiverId: neonResult?.caregiverAccountId || null,
+                    neonSocialWorkerId: neonResult?.socialWorkerAccountId || null,
+                    neonServiceId: neonResult?.serviceRecordId || null,
+                    ...formData
+                });
+                console.log('Successfully submitted to Supabase:', supabaseResult);
+            } catch (supabaseError) {
+                console.error('Failed to submit to Supabase, but local backup saved:', supabaseError);
+            }
+        } else {
+            console.log('Supabase not configured, skipping database submission');
         }
 
         // Send success response
@@ -137,7 +189,9 @@ app.post('/api/submit', async (req, res) => {
             message: 'Form submitted successfully!',
             submissionId: filename,
             neonSubmitted: neonResult ? true : false,
-            neonDetails: neonResult || null
+            neonDetails: neonResult || null,
+            supabaseSubmitted: supabaseResult?.success || false,
+            supabaseId: supabaseResult?.data?.id || null
         });
 
     } catch (error) {
