@@ -5,23 +5,35 @@ A functional web form with Node.js/Express backend for local development, design
 ## Features
 
 - ✅ Full-featured HTML form with validation
+- ✅ Multiple request types: Bags of Hope, Shoes of Hope, General Request, Birthday, Life Box, Just Like You
 - ✅ Node.js/Express backend server
-- ✅ JSON file storage for submissions
+- ✅ JSON file storage for submissions (backup)
+- ✅ Neon CRM API integration (v1 + v2)
+- ✅ Supabase database integration with bidirectional sync
 - ✅ CORS enabled for API access
 - ✅ Loading states and error handling
-- ✅ Conditional form fields
-- ✅ Ready for Neon CRM integration
+- ✅ Advanced conditional form fields with gender-based size selections
+- ✅ Production deployment on Vercel
 
 ## Project Structure
 
 ```
 LOTCFORM/
-├── index.html          # Main form (previously FOrm1)
-├── server.js           # Express backend server
+├── index.html          # Main form (~2700 lines)
+├── server.js           # Express backend server (local dev)
+├── api/
+│   └── submit.js       # Vercel serverless function (production)
+├── neonService.js      # Neon CRM API integration
+├── supabaseService.js  # Supabase client and field mapping
 ├── package.json        # Node.js dependencies
-├── .env                # Environment variables
-├── .gitignore          # Git ignore rules
-├── submissions/        # Form submission storage (JSON files)
+├── .env                # Environment variables (not in git)
+├── docs/               # Documentation and migrations
+│   ├── CLAUDE.md       # Context for AI assistance
+│   ├── add-all-new-fields-migration.sql
+│   ├── add-shoes-of-hope-fields-migration.sql
+│   ├── SUPABASE_FIELD_AUDIT.md
+│   └── FORM_GAP_ANALYSIS.md
+├── submissions/        # Form submission storage (JSON backups)
 └── README.md           # This file
 ```
 
@@ -139,9 +151,18 @@ Health check endpoint
 
 Environment variables are stored in `.env`:
 
-```
+```bash
+# Server
 PORT=3000
 NODE_ENV=development
+
+# Neon CRM
+NEON_ORG_ID=your_org_id
+NEON_API_KEY=your_api_key
+
+# Supabase
+SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
 To change the port, edit the `.env` file or set the `PORT` environment variable:
