@@ -856,14 +856,12 @@
                 <h3>Required Information</h3>
                 <ul>
                     <li>Caregiver's full name and contact information</li>
-                    <li>Social worker's full name and county of employment</li>
+                    <li>Social worker's full name, phone, email, and county of employment</li>
                     <li>Child's personal details (name, date of birth, placement type)</li>
                     <li>Service request details and justification</li>
                     <li>Pick-up location information</li>
                 </ul>
             </div>
-
-            <p><strong>Note:</strong> If you are a DSS Social Worker, both your information and the caregiver's information are required to complete this form.</p>
 
             <button class="acknowledgement-btn" onclick="closeAcknowledgement()">I Understand - Continue to Form</button>
         </div>
@@ -891,7 +889,6 @@
                         <select id="requestType" name="requestType" required>
                             <option value="">-- Select --</option>
                             <option value="Bags of Hope">Bags of Hope</option>
-                            <option value="Shoes of Hope">Shoes of Hope</option>
                             <option value="General Request">General Request</option>
                             <option value="Birthday">Birthday</option>
                             <option value="Life Box">Life Box</option>
@@ -904,27 +901,13 @@
                         <label class="required">General Request Type</label>
                         <select id="generalRequestSubType" name="generalRequestSubType">
                             <option value="">-- Select --</option>
-                            <option value="Bed">Bed</option>
-                            <option value="Baby">Baby</option>
+                            <option value="Baby equipment (stroller, high chair, etc.)">Baby equipment (stroller, high chair, etc.)</option>
+                            <option value="Bed (bed frames, mattresses, crib, etc.)">Bed (bed frames, mattresses, crib, etc.)</option>
+                            <option value="Something else">Something else</option>
                         </select>
                         <small style="color: #666; display: block; margin-top: 4px;">Please specify what type of general request this is.</small>
                     </div>
 
-                    <!-- Conditional field for Bed request reason -->
-                    <div class="form-group hidden" id="bedReasonGroup">
-                        <label class="required">Reason a bed is needed</label>
-                        <select id="bedReason" name="bedReason">
-                            <option value="">-- Select --</option>
-                            <option value="New placement">New placement</option>
-                            <option value="Damaged/broken bed">Damaged/broken bed</option>
-                            <option value="Age-appropriate bed needed">Age-appropriate bed needed</option>
-                            <option value="Growing child needs larger bed">Growing child needs larger bed</option>
-                            <option value="Safety concerns with current bed">Safety concerns with current bed</option>
-                            <option value="Transition from crib to bed">Transition from crib to bed</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <small style="color: #666; display: block; margin-top: 4px;">Please specify why a bed is needed for this child.</small>
-                    </div>
                 </div>
 
                 <!-- Relationship Section -->
@@ -937,13 +920,27 @@
                             <option value="">-- Select --</option>
                             <option value="Caregiver">Caregiver</option>
                             <option value="DSS Social Worker">DSS Social Worker</option>
-                            <option value="Other (GAL, case worker, etc.)">Other (GAL, case worker, etc.)</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
 
-                    <div class="form-group hidden" id="relationshipOtherGroup">
-                        <label class="required">Please specify other relationship</label>
-                        <input type="text" id="relationshipOther" name="relationshipOther" placeholder="Enter relationship details">
+                    <!-- Secondary "Other" dropdown -->
+                    <div class="form-group hidden" id="relationshipOtherTypeGroup">
+                        <label class="required">Please specify other relationship type</label>
+                        <select id="relationshipOtherType" name="relationshipOtherType">
+                            <option value="">-- Select --</option>
+                            <option value="GAL">GAL</option>
+                            <option value="Group Home">Group Home</option>
+                            <option value="Licensing agency caseworker">Licensing agency caseworker</option>
+                            <option value="County staff">County staff</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Text field for custom "Other" -->
+                    <div class="form-group hidden" id="relationshipOtherCustomGroup">
+                        <label class="required">Please specify</label>
+                        <input type="text" id="relationshipOtherCustom" name="relationshipOtherCustom" placeholder="Enter relationship details">
                     </div>
 
                     <!-- Person Completing Form Details - shown when relationship is Other -->
@@ -967,7 +964,7 @@
 
                         <div class="form-group">
                             <label class="required">Phone Number</label>
-                            <input type="tel" id="personCompletingPhone" name="personCompletingPhone" placeholder="(555) 555-5555">
+                            <input type="tel" id="personCompletingPhone" name="personCompletingPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                         </div>
 
                         <div class="form-group">
@@ -977,6 +974,11 @@
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
+                        </div>
+
+                        <div class="form-group hidden" id="personCompletingAltPhoneGroup">
+                            <label class="required">Alternative Phone Number</label>
+                            <input type="tel" id="personCompletingAltPhone" name="personCompletingAltPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                         </div>
 
                         <div class="form-group">
@@ -1011,7 +1013,7 @@
 
                     <div class="form-group">
                         <label class="required">Mobile Number <span class="helper-text">(For status updates)</span></label>
-                        <input type="tel" id="caregiverPhone" name="caregiverPhone" placeholder="(555) 555-5555">
+                        <input type="tel" id="caregiverPhone" name="caregiverPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                     </div>
 
                     <div class="form-group">
@@ -1023,17 +1025,7 @@
 
                     <div class="form-group hidden" id="alternativePhoneGroup">
                         <label class="required">Alternative Phone Number</label>
-                        <input type="tel" id="alternativePhone" name="alternativePhone" placeholder="(555) 555-5555">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Can the Caregiver receive text messages?</label>
-                        <select id="caregiverTextable" name="caregiverTextable">
-                            <option value="">-- Select --</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                        <small style="color: #666; display: block; margin-top: 4px;">Helps us determine the best way to communicate with the caregiver.</small>
+                        <input type="tel" id="alternativePhone" name="alternativePhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                     </div>
 
                     <div class="form-group">
@@ -1113,19 +1105,6 @@
                         <small style="color: #666; display: block; margin-top: 4px;">The agency that licensed the foster caregiver.</small>
                     </div>
 
-                    <div class="form-group hidden" id="socialWorkerInfoQuestion">
-                        <label class="required">Do you have the information for the social worker?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" id="hasSocialWorkerInfoYes" name="hasSocialWorkerInfo" value="yes">
-                                Yes
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" id="hasSocialWorkerInfoNo" name="hasSocialWorkerInfo" value="no">
-                                No
-                            </label>
-                        </div>
-                    </div>
                     </div>
                 </div>
 
@@ -1154,7 +1133,7 @@
 
                     <div class="form-group">
                         <label class="required">Mobile Number <span class="helper-text">(For status updates)</span></label>
-                        <input type="tel" id="socialWorkerPhone" name="socialWorkerPhone" placeholder="(555) 555-5555">
+                        <input type="tel" id="socialWorkerPhone" name="socialWorkerPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                     </div>
 
                     <div class="form-group">
@@ -1166,12 +1145,7 @@
 
                     <div class="form-group hidden" id="alternativeSocialWorkerPhoneGroup">
                         <label class="required">Alternative Phone Number</label>
-                        <input type="tel" id="alternativeSocialWorkerPhone" name="alternativeSocialWorkerPhone" placeholder="(555) 555-5555">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Extension</label>
-                        <input type="text" id="socialWorkerPhoneExt" name="socialWorkerPhoneExt">
+                        <input type="tel" id="alternativeSocialWorkerPhone" name="alternativeSocialWorkerPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                     </div>
 
                     <div class="form-group">
@@ -1190,7 +1164,7 @@
 
                     <div class="form-group">
                         <label class="required">Social Worker county of employment</label>
-                        <select id="socialWorkerCounty" name="socialWorkerCounty" required>
+                        <select id="socialWorkerCounty" name="socialWorkerCounty" required autocomplete="off">
                             <option value="">-- Select --</option>
                             <option value="Abbeville, SC">Abbeville, SC</option>
                             <option value="Aiken, SC">Aiken, SC</option>
@@ -1374,21 +1348,28 @@
                         <select id="completionContact" name="completionContact" required>
                             <option value="">-- Select --</option>
                             <option value="Caregiver">Caregiver</option>
-                            <option value="Social Worker">Social Worker</option>
-                            <option value="Person who completed the form">Person who completed the form</option>
+                            <option value="DSS Social Worker">DSS Social Worker</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label class="required">Estimated Pickup Date</label>
-                        <input type="date" id="pickupDate" name="pickupDate" required>
-                        <small style="color: #666; display: block; margin-top: 4px;">When do you plan to pick up the items?</small>
+                    <!-- Secondary "Other" dropdown for Completion Contact -->
+                    <div class="form-group hidden" id="completionContactOtherTypeGroup">
+                        <label class="required">Please specify other contact type</label>
+                        <select id="completionContactOtherType" name="completionContactOtherType">
+                            <option value="">-- Select --</option>
+                            <option value="GAL">GAL</option>
+                            <option value="Group Home">Group Home</option>
+                            <option value="Licensing agency caseworker">Licensing agency caseworker</option>
+                            <option value="County staff">County staff</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
 
-                    <div class="form-group">
-                        <label class="required">Estimated Pickup Time</label>
-                        <input type="time" id="pickupTime" name="pickupTime" required>
-                        <small style="color: #666; display: block; margin-top: 4px;">What time do you plan to arrive?</small>
+                    <!-- Text field for custom "Other" -->
+                    <div class="form-group hidden" id="completionContactOtherCustomGroup">
+                        <label class="required">Please specify</label>
+                        <input type="text" id="completionContactOtherCustom" name="completionContactOtherCustom" placeholder="Enter contact details">
                     </div>
 
                     <div class="form-group" id="pickupLocationGroup">
@@ -1399,10 +1380,10 @@
                             <option value="Burke County/Morganton">Burke County/Morganton</option>
                             <option value="Catawba County/Hickory">Catawba County/Hickory</option>
                             <option value="Cleveland County/Shelby">Cleveland County/Shelby</option>
-                            <option value="Cornelius/Lake Norman">Cornelius/Lake Norman</option>
+                            <option value="Cornelius">Cornelius</option>
                             <option value="LOT Office">LOT Office</option>
                             <option value="McDowell County/Marion">McDowell County/Marion</option>
-                            <option value="Hendrick Motors/Charlotte">Hendrick Motors/Charlotte</option>
+                            <option value="Mecklenburg County/Independence Blvd">Mecklenburg County/Independence Blvd</option>
                             <option value="Mecklenburg County/Northlake">Mecklenburg County/Northlake</option>
                             <option value="Rutherford County/Forest City">Rutherford County/Forest City</option>
                             <option value="Stanly County/Albemarle">Stanly County/Albemarle</option>
@@ -1448,6 +1429,7 @@
                             <option value="Foster - Group Home placement">Foster - Group Home placement</option>
                             <option value="Kinship">Kinship</option>
                             <option value="Guardianship">Guardianship</option>
+                            <option value="Age 18 or more">Age 18 or more</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -1480,44 +1462,14 @@
 
                         <div class="form-group">
                             <label class="required">Group Home Main Phone Number</label>
-                            <input type="tel" id="groupHomePhone" name="groupHomePhone" placeholder="(555) 555-5555">
+                            <input type="tel" id="groupHomePhone" name="groupHomePhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
                             <small style="color: #666; display: block; margin-top: 4px;">Main contact number for the group home.</small>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Child's Nickname</label>
+                        <label>Name the Child goes by</label>
                         <input type="text" id="childNickname" name="childNickname">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Does child have siblings?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" id="hasSiblingsYes" name="hasSiblings" value="yes">
-                                Yes
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" id="hasSiblingsNo" name="hasSiblings" value="no">
-                                No
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group hidden" id="childSiblingsNamesGroup">
-                        <label>Child's Siblings Names</label>
-                        <textarea id="childSiblingsNames" name="childSiblingsNames" rows="3" placeholder="Enter first name and last initial only (e.g., John D., Sarah D.)"></textarea>
-                        <small style="color: #666; display: block; margin-top: 4px;">List sibling names with first name and last initial only.</small>
-                    </div>
-
-                    <div class="form-group hidden" id="siblingsSameHomeGroup">
-                        <label>Are child's siblings in the same home as this child?</label>
-                        <select id="siblingsSameHome" name="siblingsSameHome">
-                            <option value="">-- Select --</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                        <small style="color: #666; display: block; margin-top: 4px;">Indicate if siblings are placed together.</small>
                     </div>
 
                     <div class="form-group">
@@ -1556,61 +1508,19 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label class="required">County that has Custody of Child</label>
-                        <select id="childCustodyCounty" name="childCustodyCounty" required>
-                            <option value="">-- Select --</option>
-                            <option value="Alamance, NC">Alamance, NC</option>
-                            <option value="Alexander, NC">Alexander, NC</option>
-                            <option value="Alleghany, NC">Alleghany, NC</option>
-                            <option value="Anson, NC">Anson, NC</option>
-                            <option value="Ashe, NC">Ashe, NC</option>
-                            <option value="Avery, NC">Avery, NC</option>
-                            <option value="Buncombe, NC">Buncombe, NC</option>
-                            <option value="Burke, NC">Burke, NC</option>
-                            <option value="Cabarrus, NC">Cabarrus, NC</option>
-                            <option value="Caldwell, NC">Caldwell, NC</option>
-                            <option value="Catawba, NC">Catawba, NC</option>
-                            <option value="Cherokee, NC">Cherokee, NC</option>
-                            <option value="Clay, NC">Clay, NC</option>
-                            <option value="Cleveland, NC">Cleveland, NC</option>
-                            <option value="Davidson, NC">Davidson, NC</option>
-                            <option value="Davie, NC">Davie, NC</option>
-                            <option value="Gaston, NC">Gaston, NC</option>
-                            <option value="Graham, NC">Graham, NC</option>
-                            <option value="Haywood, NC">Haywood, NC</option>
-                            <option value="Henderson, NC">Henderson, NC</option>
-                            <option value="Iredell, NC">Iredell, NC</option>
-                            <option value="Jackson, NC">Jackson, NC</option>
-                            <option value="Lincoln, NC">Lincoln, NC</option>
-                            <option value="Macon, NC">Macon, NC</option>
-                            <option value="Madison, NC">Madison, NC</option>
-                            <option value="McDowell, NC">McDowell, NC</option>
-                            <option value="Mecklenburg, NC">Mecklenburg, NC</option>
-                            <option value="Mitchell, NC">Mitchell, NC</option>
-                            <option value="Polk, NC">Polk, NC</option>
-                            <option value="Rowan, NC">Rowan, NC</option>
-                            <option value="Rutherford, NC">Rutherford, NC</option>
-                            <option value="Stanly, NC">Stanly, NC</option>
-                            <option value="Swain, NC">Swain, NC</option>
-                            <option value="Transylvania, NC">Transylvania, NC</option>
-                            <option value="Union, NC">Union, NC</option>
-                            <option value="Watauga, NC">Watauga, NC</option>
-                            <option value="Wilkes, NC">Wilkes, NC</option>
-                            <option value="Yancey, NC">Yancey, NC</option>
-                            <option value="Abbeville, SC">Abbeville, SC</option>
-                            <option value="Anderson, SC">Anderson, SC</option>
-                            <option value="Cherokee, SC">Cherokee, SC</option>
-                            <option value="Greenville, SC">Greenville, SC</option>
-                            <option value="Greenwood, SC">Greenwood, SC</option>
-                            <option value="Laurens, SC">Laurens, SC</option>
-                            <option value="Oconee, SC">Oconee, SC</option>
-                            <option value="Pickens, SC">Pickens, SC</option>
-                            <option value="Spartanburg, SC">Spartanburg, SC</option>
-                            <option value="York, SC">York, SC</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <small style="color: #666; display: block; margin-top: 4px;">The county that has legal custody of the child.</small>
+                    <!-- Life Box 18+ Youth Contact Information -->
+                    <div class="hidden" id="lifeBox18PlusSection">
+                        <div class="form-group">
+                            <label class="required">Youth's Phone Number</label>
+                            <input type="tel" id="childPhone" name="childPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
+                            <small style="color: #666; display: block; margin-top: 4px;">Direct contact number for the youth (18 or older).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Youth's Email Address</label>
+                            <input type="email" id="childEmail" name="childEmail" placeholder="youth@example.com">
+                            <small style="color: #666; display: block; margin-top: 4px;">Email address for the youth (18 or older).</small>
+                        </div>
                     </div>
 
                 </div>
@@ -1621,277 +1531,28 @@
                     <p style="color: #666; margin-bottom: 20px;">Required for Bags of Hope requests</p>
 
                     <div class="form-group">
-                        <label class="required">Child's Shirt Size</label>
-                        <select id="shirtSize" name="shirtSize">
-                            <option value="">-- Select --</option>
-                            <option value="Newborn">Newborn</option>
-                            <option value="0-3 months">0-3 months</option>
-                            <option value="3-6 months">3-6 months</option>
-                            <option value="6-9 months">6-9 months</option>
-                            <option value="9-12 months">9-12 months</option>
-                            <option value="12-18 months">12-18 months</option>
-                            <option value="18-24 months">18-24 months</option>
-                            <option value="2T">2T</option>
-                            <option value="3T">3T</option>
-                            <option value="4T">4T</option>
-                            <option value="5T">5T</option>
-                            <option value="XS (4-5)">XS (4-5)</option>
-                            <option value="S (6-7)">S (6-7)</option>
-                            <option value="M (8-10)">M (8-10)</option>
-                            <option value="L (12-14)">L (12-14)</option>
-                            <option value="XL (16-18)">XL (16-18)</option>
-                            <option value="Adult S">Adult S</option>
-                            <option value="Adult M">Adult M</option>
-                            <option value="Adult L">Adult L</option>
-                            <option value="Adult XL">Adult XL</option>
-                        </select>
+                        <label>Child's Shirt Size</label>
+                        <input type="text" id="shirtSize" name="shirtSize" placeholder="e.g., 2T, S (6-7), Adult M">
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Child's Pant Size</label>
-                        <select id="pantSize" name="pantSize">
-                            <option value="">-- Select --</option>
-                            <option value="Newborn">Newborn</option>
-                            <option value="0-3 months">0-3 months</option>
-                            <option value="3-6 months">3-6 months</option>
-                            <option value="6-9 months">6-9 months</option>
-                            <option value="9-12 months">9-12 months</option>
-                            <option value="12-18 months">12-18 months</option>
-                            <option value="18-24 months">18-24 months</option>
-                            <option value="2T">2T</option>
-                            <option value="3T">3T</option>
-                            <option value="4T">4T</option>
-                            <option value="5T">5T</option>
-                            <option value="XS (4-5)">XS (4-5)</option>
-                            <option value="S (6-7)">S (6-7)</option>
-                            <option value="M (8-10)">M (8-10)</option>
-                            <option value="L (12-14)">L (12-14)</option>
-                            <option value="XL (16-18)">XL (16-18)</option>
-                            <option value="Adult S">Adult S</option>
-                            <option value="Adult M">Adult M</option>
-                            <option value="Adult L">Adult L</option>
-                            <option value="Adult XL">Adult XL</option>
-                        </select>
+                        <label>Child's Pant Size</label>
+                        <input type="text" id="pantSize" name="pantSize" placeholder="e.g., 3T, M (8-10), Adult L">
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Child's Sock/Shoe Size</label>
-                        <select id="sockShoeSize" name="sockShoeSize">
-                            <option value="">-- Select --</option>
-                            <option value="Newborn">Newborn</option>
-                            <option value="0-6 months">0-6 months</option>
-                            <option value="6-12 months">6-12 months</option>
-                            <option value="12-24 months">12-24 months</option>
-                            <option value="Toddler 4">Toddler 4</option>
-                            <option value="Toddler 5">Toddler 5</option>
-                            <option value="Toddler 6">Toddler 6</option>
-                            <option value="Toddler 7">Toddler 7</option>
-                            <option value="Toddler 8">Toddler 8</option>
-                            <option value="Toddler 9">Toddler 9</option>
-                            <option value="Youth 10">Youth 10</option>
-                            <option value="Youth 11">Youth 11</option>
-                            <option value="Youth 12">Youth 12</option>
-                            <option value="Youth 13">Youth 13</option>
-                            <option value="Youth 1">Youth 1</option>
-                            <option value="Youth 2">Youth 2</option>
-                            <option value="Youth 3">Youth 3</option>
-                            <option value="Youth 4">Youth 4</option>
-                            <option value="Youth 5">Youth 5</option>
-                            <option value="Adult 6">Adult 6</option>
-                            <option value="Adult 7">Adult 7</option>
-                            <option value="Adult 8">Adult 8</option>
-                            <option value="Adult 9">Adult 9</option>
-                            <option value="Adult 10">Adult 10</option>
-                            <option value="Adult 11">Adult 11</option>
-                            <option value="Adult 12">Adult 12</option>
-                        </select>
+                        <label>Child's Sock/Shoe Size</label>
+                        <input type="text" id="sockShoeSize" name="sockShoeSize" placeholder="e.g., Toddler 6, Youth 2, Adult 8">
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Child's Undergarments Size</label>
-                        <select id="undergarmentSize" name="undergarmentSize">
-                            <option value="">-- Select --</option>
-                            <option value="Newborn">Newborn</option>
-                            <option value="0-3 months">0-3 months</option>
-                            <option value="3-6 months">3-6 months</option>
-                            <option value="6-9 months">6-9 months</option>
-                            <option value="9-12 months">9-12 months</option>
-                            <option value="12-18 months">12-18 months</option>
-                            <option value="18-24 months">18-24 months</option>
-                            <option value="2T-3T">2T-3T</option>
-                            <option value="4T-5T">4T-5T</option>
-                            <option value="XS (4-5)">XS (4-5)</option>
-                            <option value="S (6-7)">S (6-7)</option>
-                            <option value="M (8-10)">M (8-10)</option>
-                            <option value="L (12-14)">L (12-14)</option>
-                            <option value="XL (16-18)">XL (16-18)</option>
-                        </select>
+                        <label>Child's Undergarments Size</label>
+                        <input type="text" id="undergarmentSize" name="undergarmentSize" placeholder="e.g., 2T-3T, S (6-7), M (8-10)">
                     </div>
 
                     <div class="form-group">
-                        <label class="required">Child's Diaper Size</label>
-                        <select id="diaperSize" name="diaperSize">
-                            <option value="">-- Select --</option>
-                            <option value="N/A - Not needed">N/A - Not needed</option>
-                            <option value="Newborn">Newborn</option>
-                            <option value="Size 1">Size 1</option>
-                            <option value="Size 2">Size 2</option>
-                            <option value="Size 3">Size 3</option>
-                            <option value="Size 4">Size 4</option>
-                            <option value="Size 5">Size 5</option>
-                            <option value="Size 6">Size 6</option>
-                            <option value="Size 7">Size 7</option>
-                            <option value="Pull-Ups 2T-3T">Pull-Ups 2T-3T</option>
-                            <option value="Pull-Ups 3T-4T">Pull-Ups 3T-4T</option>
-                            <option value="Pull-Ups 4T-5T">Pull-Ups 4T-5T</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Shoes of Hope Section -->
-                <div class="form-section hidden" id="shoesOfHopeSection">
-                    <h2 class="section-title">Shoes of Hope - Sizing Information</h2>
-                    <p style="color: #666; margin-bottom: 20px;">Required for Shoes of Hope requests</p>
-
-                    <div class="form-group">
-                        <label class="required">What grade will the child be in this fall?</label>
-                        <select id="childGradeFall" name="childGradeFall">
-                            <option value="">-- Please Select --</option>
-                            <option value="Pre-K">Pre-K</option>
-                            <option value="Kindergarten">Kindergarten</option>
-                            <option value="1st Grade">1st Grade</option>
-                            <option value="2nd Grade">2nd Grade</option>
-                            <option value="3rd Grade">3rd Grade</option>
-                            <option value="4th Grade">4th Grade</option>
-                            <option value="5th Grade">5th Grade</option>
-                            <option value="6th Grade">6th Grade</option>
-                            <option value="7th Grade">7th Grade</option>
-                            <option value="8th Grade">8th Grade</option>
-                            <option value="9th Grade">9th Grade</option>
-                            <option value="10th Grade">10th Grade</option>
-                            <option value="11th Grade">11th Grade</option>
-                            <option value="12th Grade">12th Grade</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="required">SHOES - Will you be choosing shoes for a girl or boy?</label>
-                        <select id="shoeGender" name="shoeGender">
-                            <option value="">-- Please Select --</option>
-                            <option value="Girl">Girl</option>
-                            <option value="Boy">Boy</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group hidden" id="girlShoeSizeGroup">
-                        <label class="required">GIRL Shoe Sizes</label>
-                        <select id="girlShoeSize" name="girlShoeSize">
-                            <option value="">-- Please Select --</option>
-                            <option value="Toddler 4">Toddler 4</option>
-                            <option value="Toddler 5">Toddler 5</option>
-                            <option value="Toddler 6">Toddler 6</option>
-                            <option value="Toddler 7">Toddler 7</option>
-                            <option value="Toddler 8">Toddler 8</option>
-                            <option value="Toddler 9">Toddler 9</option>
-                            <option value="Youth 10">Youth 10</option>
-                            <option value="Youth 11">Youth 11</option>
-                            <option value="Youth 12">Youth 12</option>
-                            <option value="Youth 13">Youth 13</option>
-                            <option value="Youth 1">Youth 1</option>
-                            <option value="Youth 2">Youth 2</option>
-                            <option value="Youth 3">Youth 3</option>
-                            <option value="Youth 4">Youth 4</option>
-                            <option value="Youth 5">Youth 5</option>
-                            <option value="Women 6">Women 6</option>
-                            <option value="Women 7">Women 7</option>
-                            <option value="Women 8">Women 8</option>
-                            <option value="Women 9">Women 9</option>
-                            <option value="Women 10">Women 10</option>
-                            <option value="Women 11">Women 11</option>
-                            <option value="Women 12">Women 12</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group hidden" id="boyShoeSizeGroup">
-                        <label class="required">BOY Shoe Sizes</label>
-                        <select id="boyShoeSize" name="boyShoeSize">
-                            <option value="">-- Please Select --</option>
-                            <option value="Toddler 4">Toddler 4</option>
-                            <option value="Toddler 5">Toddler 5</option>
-                            <option value="Toddler 6">Toddler 6</option>
-                            <option value="Toddler 7">Toddler 7</option>
-                            <option value="Toddler 8">Toddler 8</option>
-                            <option value="Toddler 9">Toddler 9</option>
-                            <option value="Youth 10">Youth 10</option>
-                            <option value="Youth 11">Youth 11</option>
-                            <option value="Youth 12">Youth 12</option>
-                            <option value="Youth 13">Youth 13</option>
-                            <option value="Youth 1">Youth 1</option>
-                            <option value="Youth 2">Youth 2</option>
-                            <option value="Youth 3">Youth 3</option>
-                            <option value="Youth 4">Youth 4</option>
-                            <option value="Youth 5">Youth 5</option>
-                            <option value="Men 6">Men 6</option>
-                            <option value="Men 7">Men 7</option>
-                            <option value="Men 8">Men 8</option>
-                            <option value="Men 9">Men 9</option>
-                            <option value="Men 10">Men 10</option>
-                            <option value="Men 11">Men 11</option>
-                            <option value="Men 12">Men 12</option>
-                            <option value="Men 13">Men 13</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="required">UNDERWEAR - Will you be choosing underwear for a girl or boy?</label>
-                        <select id="underwearGender" name="underwearGender">
-                            <option value="">-- Please Select --</option>
-                            <option value="Girl">Girl</option>
-                            <option value="Boy">Boy</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group hidden" id="girlsUnderwearSizeGroup">
-                        <label class="required">Girls Underwear Sizes</label>
-                        <select id="girlsUnderwearSize" name="girlsUnderwearSize">
-                            <option value="">-- Please Select --</option>
-                            <option value="2T-3T">2T-3T</option>
-                            <option value="4T">4T</option>
-                            <option value="5T">5T</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="14">14</option>
-                            <option value="16">16</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group hidden" id="boysUnderwearSizeGroup">
-                        <label class="required">Boys Underwear Sizes</label>
-                        <select id="boysUnderwearSize" name="boysUnderwearSize">
-                            <option value="">-- Please Select --</option>
-                            <option value="2T-3T">2T-3T</option>
-                            <option value="4T">4T</option>
-                            <option value="5T">5T</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="14">14</option>
-                            <option value="16">16</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Comments</label>
-                        <textarea id="shoesOfHopeComments" name="shoesOfHopeComments" rows="4" placeholder="Any additional comments or special requests..."></textarea>
+                        <label>Child's Diaper Size</label>
+                        <input type="text" id="diaperSize" name="diaperSize" placeholder="e.g., Size 3, Pull-Ups 2T-3T, N/A">
                     </div>
                 </div>
 
@@ -2020,7 +1681,7 @@
             '28274': 'Mecklenburg, NC', '28277': 'Mecklenburg, NC', '28278': 'Mecklenburg, NC',
 
             // North Carolina - Gaston County
-            '28012': 'Gaston, NC', '28016': 'Gaston, NC', '28032': 'Gaston, NC', '28033': 'Gaston, NC',
+            '28012': 'Gaston, NC', '28016': 'Gaston, NC', '28021': 'Gaston, NC', '28032': 'Gaston, NC', '28033': 'Gaston, NC',
             '28034': 'Gaston, NC', '28052': 'Gaston, NC', '28053': 'Gaston, NC', '28054': 'Gaston, NC',
             '28056': 'Gaston, NC', '28086': 'Gaston, NC', '28092': 'Gaston, NC', '28098': 'Gaston, NC',
 
@@ -2065,6 +1726,12 @@
             '27710': 'Durham, NC', '27711': 'Durham, NC', '27712': 'Durham, NC',
             '27713': 'Durham, NC', '27715': 'Durham, NC', '27717': 'Durham, NC',
             '27722': 'Durham, NC',
+
+            // North Carolina - Cabarrus County
+            '28081': 'Cabarrus, NC',
+
+            // North Carolina - Rowan County
+            '28023': 'Rowan, NC',
 
             // North Carolina - Other major counties
             '28540': 'Onslow, NC', '28541': 'Onslow, NC', '28542': 'Onslow, NC',
@@ -2156,6 +1823,58 @@
             }
         });
 
+        // Helper function to check and handle Life Box 18+ logic
+        function checkLifeBox18Plus() {
+            const requestType = document.getElementById('requestType').value;
+            const childDOB = document.getElementById('childDOB').value;
+            const caregiverSection = document.getElementById('caregiverSection');
+            const lifeBox18PlusSection = document.getElementById('lifeBox18PlusSection');
+            const childPhone = document.getElementById('childPhone');
+            const childEmail = document.getElementById('childEmail');
+            const childPlacementType = document.getElementById('childPlacementType');
+
+            // Calculate age from DOB
+            let age = null;
+            if (childDOB) {
+                const dob = new Date(childDOB);
+                const today = new Date();
+                age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+            }
+
+            // Check if Life Box AND age >= 18
+            if (requestType === 'Life Box' && age !== null && age >= 18) {
+                // Hide caregiver section
+                caregiverSection.classList.add('hidden');
+
+                // Show Life Box 18+ section
+                lifeBox18PlusSection.classList.remove('hidden');
+                childPhone.required = true;
+                childEmail.required = true;
+
+                // Auto-populate placement type
+                childPlacementType.value = 'Age 18 or more';
+            } else {
+                // Show caregiver section
+                caregiverSection.classList.remove('hidden');
+
+                // Hide Life Box 18+ section
+                lifeBox18PlusSection.classList.add('hidden');
+                childPhone.required = false;
+                childEmail.required = false;
+                childPhone.value = '';
+                childEmail.value = '';
+
+                // Clear auto-populated placement type if it was set
+                if (childPlacementType.value === 'Age 18 or more' && requestType !== 'Life Box') {
+                    childPlacementType.value = '';
+                }
+            }
+        }
+
         // Child age auto-calculation from date of birth
         document.getElementById('childDOB').addEventListener('change', function() {
             const childAgeInput = document.getElementById('childAge');
@@ -2182,6 +1901,9 @@
             } else {
                 childAgeInput.value = '';
             }
+
+            // Check Life Box 18+ conditions
+            checkLifeBox18Plus();
         });
 
         // Relationship dropdown - auto-expand sections based on selection
@@ -2194,8 +1916,6 @@
             const socialWorkerHeader = socialWorkerSection.querySelector('.collapsible-header');
             const socialWorkerContent = socialWorkerSection.querySelector('.collapsible-content');
 
-            const socialWorkerInfoQuestion = document.getElementById('socialWorkerInfoQuestion');
-            const hasSocialWorkerInfoRadios = document.querySelectorAll('input[name="hasSocialWorkerInfo"]');
 
             const caregiverInfoQuestion = document.getElementById('caregiverInfoQuestion');
             const hasCaregiverInfoRadios = document.querySelectorAll('input[name="hasCaregiverInfo"]');
@@ -2212,9 +1932,6 @@
                 caregiverHeader.classList.remove('collapsed');
                 caregiverContent.classList.remove('collapsed');
 
-                // Show the social worker info question (in caregiver section)
-                socialWorkerInfoQuestion.classList.remove('hidden');
-
                 // Hide the caregiver info question (in social worker section)
                 caregiverInfoQuestion.classList.add('hidden');
                 hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
@@ -2222,9 +1939,6 @@
                 // Collapse DSS Social Worker section until user answers the question
                 socialWorkerHeader.classList.add('collapsed');
                 socialWorkerContent.classList.add('collapsed');
-
-                // Clear the social worker info radio selection
-                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
 
             } else if (this.value === 'DSS Social Worker') {
                 // Reorder: Social Worker section first, then Caregiver section
@@ -2243,10 +1957,6 @@
                 caregiverInfoQuestion.classList.add('hidden');
                 hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
 
-                // Hide the social worker info question (in caregiver section)
-                socialWorkerInfoQuestion.classList.add('hidden');
-                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
-
                 // Make caregiver fields required
                 document.querySelectorAll('#caregiverSection input[required], #caregiverSection select[required]').forEach(field => {
                     field.setAttribute('data-required-by', 'social-worker');
@@ -2262,9 +1972,7 @@
                 caregiverContent.classList.add('collapsed');
                 socialWorkerHeader.classList.add('collapsed');
                 socialWorkerContent.classList.add('collapsed');
-                socialWorkerInfoQuestion.classList.add('hidden');
                 caregiverInfoQuestion.classList.add('hidden');
-                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
                 hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
 
             } else {
@@ -2276,17 +1984,17 @@
                 caregiverContent.classList.add('collapsed');
                 socialWorkerHeader.classList.add('collapsed');
                 socialWorkerContent.classList.add('collapsed');
-                socialWorkerInfoQuestion.classList.add('hidden');
                 caregiverInfoQuestion.classList.add('hidden');
-                hasSocialWorkerInfoRadios.forEach(radio => radio.checked = false);
                 hasCaregiverInfoRadios.forEach(radio => radio.checked = false);
             }
         });
 
         // Handle "Other" selection for Relationship field
         document.getElementById('relationship').addEventListener('change', function() {
-            const otherGroup = document.getElementById('relationshipOtherGroup');
-            const otherInput = document.getElementById('relationshipOther');
+            const otherTypeGroup = document.getElementById('relationshipOtherTypeGroup');
+            const otherTypeSelect = document.getElementById('relationshipOtherType');
+            const otherCustomGroup = document.getElementById('relationshipOtherCustomGroup');
+            const otherCustomInput = document.getElementById('relationshipOtherCustom');
             const personCompletingSection = document.getElementById('personCompletingSection');
             const personFirstName = document.getElementById('personCompletingFirstName');
             const personLastName = document.getElementById('personCompletingLastName');
@@ -2294,9 +2002,9 @@
             const personTextable = document.getElementById('personCompletingTextable');
             const personEmail = document.getElementById('personCompletingEmail');
 
-            if (this.value.includes('Other')) {
-                otherGroup.classList.remove('hidden');
-                otherInput.required = true;
+            if (this.value === 'Other') {
+                otherTypeGroup.classList.remove('hidden');
+                otherTypeSelect.required = true;
                 personCompletingSection.classList.remove('hidden');
                 personFirstName.required = true;
                 personLastName.required = true;
@@ -2304,9 +2012,12 @@
                 personTextable.required = true;
                 personEmail.required = true;
             } else {
-                otherGroup.classList.add('hidden');
-                otherInput.required = false;
-                otherInput.value = '';
+                otherTypeGroup.classList.add('hidden');
+                otherTypeSelect.required = false;
+                otherTypeSelect.value = '';
+                otherCustomGroup.classList.add('hidden');
+                otherCustomInput.required = false;
+                otherCustomInput.value = '';
                 personCompletingSection.classList.add('hidden');
                 personFirstName.required = false;
                 personLastName.required = false;
@@ -2320,6 +2031,88 @@
                 personPhone.value = '';
                 personTextable.value = '';
                 personEmail.value = '';
+            }
+        });
+
+        // Handle secondary "Other" dropdown for Relationship
+        document.getElementById('relationshipOtherType').addEventListener('change', function() {
+            const otherCustomGroup = document.getElementById('relationshipOtherCustomGroup');
+            const otherCustomInput = document.getElementById('relationshipOtherCustom');
+
+            if (this.value === 'Other') {
+                otherCustomGroup.classList.remove('hidden');
+                otherCustomInput.required = true;
+            } else {
+                otherCustomGroup.classList.add('hidden');
+                otherCustomInput.required = false;
+                otherCustomInput.value = '';
+            }
+        });
+
+        // Handle alternative phone for Person Completing Form (when Other is selected and textable = No)
+        document.getElementById('personCompletingTextable').addEventListener('change', function() {
+            const relationship = document.getElementById('relationship').value;
+            const altPhoneGroup = document.getElementById('personCompletingAltPhoneGroup');
+            const altPhoneInput = document.getElementById('personCompletingAltPhone');
+
+            if (relationship === 'Other' && this.value === 'No') {
+                altPhoneGroup.classList.remove('hidden');
+                altPhoneInput.required = true;
+            } else {
+                altPhoneGroup.classList.add('hidden');
+                altPhoneInput.required = false;
+                altPhoneInput.value = '';
+            }
+        });
+
+        // Handle alternative phone for DSS Social Worker (when DSS is selected and textable = No)
+        document.getElementById('socialWorkerCanText').addEventListener('change', function() {
+            const relationship = document.getElementById('relationship').value;
+            const altPhoneGroup = document.getElementById('alternativeSocialWorkerPhoneGroup');
+            const altPhoneInput = document.getElementById('alternativeSocialWorkerPhone');
+
+            if (relationship === 'DSS Social Worker' && this.value === 'No') {
+                altPhoneGroup.classList.remove('hidden');
+                altPhoneInput.required = true;
+            } else {
+                altPhoneGroup.classList.add('hidden');
+                altPhoneInput.required = false;
+                altPhoneInput.value = '';
+            }
+        });
+
+        // Handle "Other" selection for Completion Contact
+        document.getElementById('completionContact').addEventListener('change', function() {
+            const otherTypeGroup = document.getElementById('completionContactOtherTypeGroup');
+            const otherTypeSelect = document.getElementById('completionContactOtherType');
+            const otherCustomGroup = document.getElementById('completionContactOtherCustomGroup');
+            const otherCustomInput = document.getElementById('completionContactOtherCustom');
+
+            if (this.value === 'Other') {
+                otherTypeGroup.classList.remove('hidden');
+                otherTypeSelect.required = true;
+            } else {
+                otherTypeGroup.classList.add('hidden');
+                otherTypeSelect.required = false;
+                otherTypeSelect.value = '';
+                otherCustomGroup.classList.add('hidden');
+                otherCustomInput.required = false;
+                otherCustomInput.value = '';
+            }
+        });
+
+        // Handle secondary "Other" dropdown for Completion Contact
+        document.getElementById('completionContactOtherType').addEventListener('change', function() {
+            const otherCustomGroup = document.getElementById('completionContactOtherCustomGroup');
+            const otherCustomInput = document.getElementById('completionContactOtherCustom');
+
+            if (this.value === 'Other') {
+                otherCustomGroup.classList.remove('hidden');
+                otherCustomInput.required = true;
+            } else {
+                otherCustomGroup.classList.add('hidden');
+                otherCustomInput.required = false;
+                otherCustomInput.value = '';
             }
         });
 
@@ -2422,18 +2215,8 @@
 
             if (this.value === 'Bags of Hope') {
                 clothingSizesSection.classList.remove('hidden');
-                shirtSize.required = true;
-                pantSize.required = true;
-                sockShoeSize.required = true;
-                undergarmentSize.required = true;
-                diaperSize.required = true;
             } else {
                 clothingSizesSection.classList.add('hidden');
-                shirtSize.required = false;
-                pantSize.required = false;
-                sockShoeSize.required = false;
-                undergarmentSize.required = false;
-                diaperSize.required = false;
                 // Clear values when hidden
                 shirtSize.value = '';
                 pantSize.value = '';
@@ -2442,129 +2225,8 @@
                 diaperSize.value = '';
             }
 
-            // Show/hide Shoes of Hope section
-            const shoesOfHopeSection = document.getElementById('shoesOfHopeSection');
-            const childGradeFall = document.getElementById('childGradeFall');
-            const shoeGender = document.getElementById('shoeGender');
-            const underwearGender = document.getElementById('underwearGender');
-
-            if (this.value === 'Shoes of Hope') {
-                shoesOfHopeSection.classList.remove('hidden');
-                childGradeFall.required = true;
-                shoeGender.required = true;
-                underwearGender.required = true;
-            } else {
-                shoesOfHopeSection.classList.add('hidden');
-                childGradeFall.required = false;
-                shoeGender.required = false;
-                underwearGender.required = false;
-                // Clear values when hidden
-                childGradeFall.value = '';
-                shoeGender.value = '';
-                underwearGender.value = '';
-                document.getElementById('girlShoeSize').value = '';
-                document.getElementById('boyShoeSize').value = '';
-                document.getElementById('girlsUnderwearSize').value = '';
-                document.getElementById('boysUnderwearSize').value = '';
-                document.getElementById('shoesOfHopeComments').value = '';
-                // Hide conditional fields
-                document.getElementById('girlShoeSizeGroup').classList.add('hidden');
-                document.getElementById('boyShoeSizeGroup').classList.add('hidden');
-                document.getElementById('girlsUnderwearSizeGroup').classList.add('hidden');
-                document.getElementById('boysUnderwearSizeGroup').classList.add('hidden');
-            }
-        });
-
-        // Handle Shoe Gender selection
-        document.getElementById('shoeGender').addEventListener('change', function() {
-            const girlShoeSizeGroup = document.getElementById('girlShoeSizeGroup');
-            const boyShoeSizeGroup = document.getElementById('boyShoeSizeGroup');
-            const girlShoeSize = document.getElementById('girlShoeSize');
-            const boyShoeSize = document.getElementById('boyShoeSize');
-
-            if (this.value === 'Girl') {
-                girlShoeSizeGroup.classList.remove('hidden');
-                girlShoeSize.required = true;
-                boyShoeSizeGroup.classList.add('hidden');
-                boyShoeSize.required = false;
-                boyShoeSize.value = '';
-            } else if (this.value === 'Boy') {
-                boyShoeSizeGroup.classList.remove('hidden');
-                boyShoeSize.required = true;
-                girlShoeSizeGroup.classList.add('hidden');
-                girlShoeSize.required = false;
-                girlShoeSize.value = '';
-            } else {
-                girlShoeSizeGroup.classList.add('hidden');
-                boyShoeSizeGroup.classList.add('hidden');
-                girlShoeSize.required = false;
-                boyShoeSize.required = false;
-                girlShoeSize.value = '';
-                boyShoeSize.value = '';
-            }
-        });
-
-        // Handle Underwear Gender selection
-        document.getElementById('underwearGender').addEventListener('change', function() {
-            const girlsUnderwearSizeGroup = document.getElementById('girlsUnderwearSizeGroup');
-            const boysUnderwearSizeGroup = document.getElementById('boysUnderwearSizeGroup');
-            const girlsUnderwearSize = document.getElementById('girlsUnderwearSize');
-            const boysUnderwearSize = document.getElementById('boysUnderwearSize');
-
-            if (this.value === 'Girl') {
-                girlsUnderwearSizeGroup.classList.remove('hidden');
-                girlsUnderwearSize.required = true;
-                boysUnderwearSizeGroup.classList.add('hidden');
-                boysUnderwearSize.required = false;
-                boysUnderwearSize.value = '';
-            } else if (this.value === 'Boy') {
-                boysUnderwearSizeGroup.classList.remove('hidden');
-                boysUnderwearSize.required = true;
-                girlsUnderwearSizeGroup.classList.add('hidden');
-                girlsUnderwearSize.required = false;
-                girlsUnderwearSize.value = '';
-            } else {
-                girlsUnderwearSizeGroup.classList.add('hidden');
-                boysUnderwearSizeGroup.classList.add('hidden');
-                girlsUnderwearSize.required = false;
-                boysUnderwearSize.required = false;
-                girlsUnderwearSize.value = '';
-                boysUnderwearSize.value = '';
-            }
-        });
-
-        // Handle General Request Sub-Type change - show bed reason if Bed selected
-        document.getElementById('generalRequestSubType').addEventListener('change', function() {
-            const bedReasonGroup = document.getElementById('bedReasonGroup');
-            const bedReasonSelect = document.getElementById('bedReason');
-
-            if (this.value === 'Bed') {
-                bedReasonGroup.classList.remove('hidden');
-                bedReasonSelect.required = true;
-            } else {
-                bedReasonGroup.classList.add('hidden');
-                bedReasonSelect.required = false;
-                bedReasonSelect.value = '';
-            }
-        });
-
-        // Handle "Do you have social worker info?" question (in Caregiver section)
-        document.querySelectorAll('input[name="hasSocialWorkerInfo"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const socialWorkerSection = document.getElementById('socialWorkerSection');
-                const socialWorkerHeader = socialWorkerSection.querySelector('.collapsible-header');
-                const socialWorkerContent = socialWorkerSection.querySelector('.collapsible-content');
-
-                if (this.value === 'yes') {
-                    // Expand DSS Social Worker section
-                    socialWorkerHeader.classList.remove('collapsed');
-                    socialWorkerContent.classList.remove('collapsed');
-                } else {
-                    // Collapse DSS Social Worker section
-                    socialWorkerHeader.classList.add('collapsed');
-                    socialWorkerContent.classList.add('collapsed');
-                }
-            });
+            // Check Life Box 18+ conditions
+            checkLifeBox18Plus();
         });
 
         // Handle "Do you have caregiver info?" question (in Social Worker section)
@@ -2582,28 +2244,6 @@
                     // Collapse Caregiver section
                     caregiverHeader.classList.add('collapsed');
                     caregiverContent.classList.add('collapsed');
-                }
-            });
-        });
-
-        // Handle "Does child have siblings?" question
-        document.querySelectorAll('input[name="hasSiblings"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const siblingsNamesGroup = document.getElementById('childSiblingsNamesGroup');
-                const siblingsSameHomeGroup = document.getElementById('siblingsSameHomeGroup');
-                const siblingsNames = document.getElementById('childSiblingsNames');
-                const siblingsSameHome = document.getElementById('siblingsSameHome');
-
-                if (this.value === 'yes') {
-                    // Show sibling detail fields
-                    siblingsNamesGroup.classList.remove('hidden');
-                    siblingsSameHomeGroup.classList.remove('hidden');
-                } else {
-                    // Hide sibling detail fields and clear values
-                    siblingsNamesGroup.classList.add('hidden');
-                    siblingsSameHomeGroup.classList.add('hidden');
-                    siblingsNames.value = '';
-                    siblingsSameHome.value = '';
                 }
             });
         });
@@ -2704,7 +2344,7 @@
             },
             {
                 id: 'cornelius',
-                name: 'Cornelius/Lake Norman',
+                name: 'Cornelius',
                 address: 'Carolina Custom, 20310 Chartwell Center Dr, Cornelius, NC 28031',
                 hours: 'M-F 8am-6pm, Sat 8am-2pm, Sun closed',
                 coords: [-80.8788821, 35.4787998]
@@ -2724,8 +2364,8 @@
                 coords: [-81.2046201734194, 36.150961785618634]
             },
             {
-                id: 'charlotte-hendrick',
-                name: 'Hendrick Motors/Charlotte',
+                id: 'charlotte-independence',
+                name: 'Mecklenburg County/Independence Blvd',
                 address: 'Hendrick Motors of CLT- Mercedes Benz, 5201 East Independence Blvd, Charlotte, NC 28212',
                 hours: 'M-F, 7:30am-7pm, Sat, 7:30-5pm',
                 coords: [-80.758758, 35.188018]
@@ -3239,11 +2879,23 @@
             }
         }
 
+        // County centroid coordinates for Social Worker map functionality
+        const countyCoordinates = {
+            'Alamance, NC': [-79.4003, 36.0432], 'Alexander, NC': [-81.1773, 35.9226],
+            'Anson, NC': [-80.1092, 35.0054], 'Buncombe, NC': [-82.5515, 35.5951],
+            'Burke, NC': [-81.7254, 35.7432], 'Cabarrus, NC': [-80.5795, 35.4107],
+            'Caldwell, NC': [-81.5343, 36.1326], 'Catawba, NC': [-81.2128, 35.7096],
+            'Cleveland, NC': [-81.5321, 35.3051], 'Davidson, NC': [-80.2364, 35.8243],
+            'Davie, NC': [-80.4123, 35.9126], 'Gaston, NC': [-81.1873, 35.2621],
+            'Iredell, NC': [-80.8579, 35.7832], 'Lincoln, NC': [-81.2543, 35.4732],
+            'Mecklenburg, NC': [-80.8431, 35.2271], 'Rowan, NC': [-80.4865, 35.6395],
+            'Rutherford, NC': [-81.9679, 35.3687], 'Stanly, NC': [-80.2765, 35.3543],
+            'Union, NC': [-80.5465, 34.9876], 'Wilkes, NC': [-81.1587, 36.2087]
+        };
+
         // Open the map modal
         async function openMapModal() {
             const modal = document.getElementById('mapModal');
-
-            // Check if pickup date and time are selected
             const pickupDate = document.getElementById('pickupDate').value;
             const pickupTime = document.getElementById('pickupTime').value;
 
@@ -3252,32 +2904,50 @@
                 return;
             }
 
-            // Get caregiver's address
-            const street = document.getElementById('caregiverStreet').value;
-            const city = document.getElementById('caregiverCity').value;
-            const state = document.getElementById('caregiverState').value;
-            const zip = document.getElementById('caregiverZip').value;
+            const relationship = document.getElementById('relationship').value;
+            let coords = null;
 
-            if (!street || !city || !state || !zip) {
-                alert('Please complete the caregiver\'s address first.');
-                return;
+            if (relationship === 'DSS Social Worker') {
+                const socialWorkerCounty = document.getElementById('socialWorkerCounty').value;
+                if (!socialWorkerCounty) {
+                    alert('Please select the social worker\'s county first.');
+                    return;
+                }
+                coords = countyCoordinates[socialWorkerCounty];
+                if (!coords) {
+                    alert('County coordinates not found. Please contact support.');
+                    return;
+                }
+            } else {
+                const street = document.getElementById('caregiverStreet').value;
+                const city = document.getElementById('caregiverCity').value;
+                const state = document.getElementById('caregiverState').value;
+                const zip = document.getElementById('caregiverZip').value;
+
+                if (!street || !city || !state || !zip) {
+                    alert('Please complete the caregiver\'s address first.');
+                    return;
+                }
+
+                coords = await geocodeAddress(`${street}, ${city}, ${state} ${zip}`);
             }
 
-            const fullAddress = `${street}, ${city}, ${state} ${zip}`;
-
-            // Show modal
             modal.classList.add('active');
-
-            // Show loading state
-            document.getElementById('locationsList').innerHTML = '<div style="padding: 20px; text-align: center;">Loading map...</div>';
-
-            // Geocode the address
-            const coords = await geocodeAddress(fullAddress);
+            const listEl = document.getElementById('locationsList');
+            listEl.textContent = '';
+            const loadDiv = document.createElement('div');
+            loadDiv.style.cssText = 'padding: 20px; text-align: center;';
+            loadDiv.textContent = 'Loading map...';
+            listEl.appendChild(loadDiv);
 
             if (coords) {
                 initializeMap(coords[0], coords[1]);
             } else {
-                document.getElementById('locationsList').innerHTML = '<div style="padding: 20px; text-align: center; color: #c22035;">Could not find address. Please check and try again.</div>';
+                listEl.textContent = '';
+                const errDiv = document.createElement('div');
+                errDiv.style.cssText = 'padding: 20px; text-align: center; color: #c22035;';
+                errDiv.textContent = 'Could not find address. Please check and try again.';
+                listEl.appendChild(errDiv);
             }
         }
 
