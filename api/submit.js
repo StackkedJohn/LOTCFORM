@@ -22,23 +22,39 @@ module.exports = async (req, res) => {
     try {
         const formData = req.body;
 
+        // Check if Life Box 18+ (no caregiver needed)
+        const isLifeBox18Plus = formData.requestType === 'Life Box' && parseInt(formData.childAge) >= 18;
+
         // Validation
         const baseRequiredFields = [
-            'requestType', 'relationship', 'caregiverFirstName', 'caregiverLastName',
-            'caregiverStreet', 'caregiverZip', 'caregiverCity', 'caregiverState', 'caregiverCounty',
+            'requestType', 'relationship',
             'socialWorkerFirstName', 'socialWorkerLastName', 'socialWorkerEmail', 'socialWorkerCounty',
             'completionContact', 'pickupDate', 'pickupTime', 'pickupLocation', 'childFirstName', 'childLastName',
-            'childPlacementType', 'childGender', 'childAge', 'childDOB', 'childEthnicity', 'childCustodyCounty',
+            'childPlacementType', 'childGender', 'childAge', 'childDOB', 'childEthnicity',
             'isLicensedFoster', 'agreeToTerms'
         ];
 
         let requiredFields = [...baseRequiredFields];
 
-        // Caregiver phone requirement
-        if (formData.noMobileNumber === 'on') {
-            requiredFields.push('alternativePhone');
+        // Caregiver fields - NOT required for Life Box 18+
+        if (!isLifeBox18Plus) {
+            requiredFields.push('caregiverFirstName', 'caregiverLastName', 'caregiverStreet', 'caregiverZip',
+                              'caregiverCity', 'caregiverState', 'caregiverCounty');
+
+            // Caregiver phone requirement
+            if (formData.noMobileNumber === 'on') {
+                requiredFields.push('alternativePhone');
+            } else {
+                requiredFields.push('caregiverPhone');
+            }
+
+            // Caregiver email requirement
+            if (formData.knowCaregiverEmail === 'yes') {
+                requiredFields.push('caregiverEmail');
+            }
         } else {
-            requiredFields.push('caregiverPhone');
+            // Life Box 18+ - require youth contact info
+            requiredFields.push('childPhone', 'childEmail');
         }
 
         // Social worker phone requirement
@@ -48,41 +64,9 @@ module.exports = async (req, res) => {
             requiredFields.push('socialWorkerPhone');
         }
 
-        // Caregiver email requirement
-        if (formData.knowCaregiverEmail === 'yes') {
-            requiredFields.push('caregiverEmail');
-        }
-
         // General Request sub-type requirement
         if (formData.requestType === 'General Request') {
             requiredFields.push('generalRequestSubType');
-        }
-
-        // Bags of Hope clothing sizes requirement
-        if (formData.requestType === 'Bags of Hope') {
-            requiredFields.push('shirtSize', 'pantSize', 'sockShoeSize', 'undergarmentSize', 'diaperSize');
-        }
-
-        // Bed request reason requirement
-        if (formData.generalRequestSubType === 'Bed') {
-            requiredFields.push('bedReason');
-        }
-
-        // Shoes of Hope requirements
-        if (formData.requestType === 'Shoes of Hope') {
-            requiredFields.push('childGradeFall', 'shoeGender', 'underwearGender');
-
-            if (formData.shoeGender === 'Girl') {
-                requiredFields.push('girlShoeSize');
-            } else if (formData.shoeGender === 'Boy') {
-                requiredFields.push('boyShoeSize');
-            }
-
-            if (formData.underwearGender === 'Girl') {
-                requiredFields.push('girlsUnderwearSize');
-            } else if (formData.underwearGender === 'Boy') {
-                requiredFields.push('boysUnderwearSize');
-            }
         }
 
         // Group Home fields requirement
@@ -91,9 +75,34 @@ module.exports = async (req, res) => {
         }
 
         // Person Completing Form fields requirement
-        if (formData.relationship && formData.relationship.includes('Other')) {
-            requiredFields.push('personCompletingFirstName', 'personCompletingLastName',
+        if (formData.relationship === 'Other') {
+            requiredFields.push('relationshipOtherType', 'personCompletingFirstName', 'personCompletingLastName',
                               'personCompletingPhone', 'personCompletingTextable', 'personCompletingEmail');
+
+            // If Other type is also "Other", require custom text
+            if (formData.relationshipOtherType === 'Other') {
+                requiredFields.push('relationshipOtherCustom');
+            }
+
+            // If textable is No, require alternative phone
+            if (formData.personCompletingTextable === 'No') {
+                requiredFields.push('personCompletingAltPhone');
+            }
+        }
+
+        // Completion Contact requirements
+        if (formData.completionContact === 'Other') {
+            requiredFields.push('completionContactOtherType');
+
+            // If Other type is also "Other", require custom text
+            if (formData.completionContactOtherType === 'Other') {
+                requiredFields.push('completionContactOtherCustom');
+            }
+        }
+
+        // DSS Social Worker alternative phone requirement
+        if (formData.relationship === 'DSS Social Worker' && formData.socialWorkerCanText === 'No') {
+            requiredFields.push('alternativeSocialWorkerPhone');
         }
 
         // Licensing Agency requirement

@@ -350,16 +350,16 @@ class NeonService {
             const pickupLocationMap = {
                 'Belmont/Keith Hawthorne': 'Other',
                 'Buncombe County/Asheville': 'Other',
-                'Burke County/Morganton - Jamestown Road': 'Other',
-                'Catawba County/Hickory - S. Center Street': 'Other',
-                'Cleveland County/Shelby - E. Dixon Blvd.': 'Other',
-                'Cornelius/Lake Norman- Torrence Chapel Rd. Cornelius': 'Lake Norman',
-                'LOTC Office - S. Myrtle School Rd, Gastonia': 'LOTC Office',
-                'McDowell County/Marion - Worley Road': 'Other',
+                'Burke County/Morganton': 'Other',
+                'Catawba County/Hickory': 'Other',
+                'Cleveland County/Shelby': 'Other',
+                'Cornelius/Lake Norman': 'Lake Norman',
+                'LOT Office': 'LOTC Office',
+                'McDowell County/Marion': 'Other',
                 'Hendrick Motors/Charlotte': 'Hendrick Honda',
                 'Mecklenburg County/Northlake': 'Other',
                 'Rutherford County/Forest City': 'Other',
-                'Stanly County/Albemarle - Aquadale Road': 'Other'
+                'Stanly County/Albemarle': 'Other'
             };
             const pickupLocationMapped = pickupLocationMap[formData.pickupLocation] || 'Other';
 
