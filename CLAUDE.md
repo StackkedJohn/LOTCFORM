@@ -76,6 +76,38 @@ if (formData.requestType === 'Shoes of Hope') {
 }
 ```
 
+### Smart Location Discovery (Map Feature)
+**Purpose:** "View Nearest Locations on Map" uses different strategies based on user type
+
+**Social Workers:**
+- **Primary:** ZIP code geocoding (more precise)
+- **Fallback:** County centroid coordinates from `countyCoordinates` lookup
+- **Reason:** Social workers don't enter full addresses, only county/ZIP
+
+**Caregivers & Others:**
+- **Strategy:** Full address geocoding (street, city, state, ZIP)
+- **Reason:** Caregivers provide complete address for accurate location
+
+**Implementation (index.html ~line 2894):**
+```javascript
+if (relationship === 'DSS Social Worker') {
+    // Try ZIP first, fallback to county centroid
+    if (socialWorkerZip) {
+        coords = await geocodeAddress(`${socialWorkerZip}, ${state}`);
+    }
+    if (!coords && socialWorkerCounty) {
+        coords = countyCoordinates[socialWorkerCounty];
+    }
+} else {
+    // Use full address
+    coords = await geocodeAddress(`${street}, ${city}, ${state} ${zip}`);
+}
+```
+
+**Validation:**
+- Social workers: Requires ZIP OR county (flexible)
+- Caregivers: Requires complete address (all fields)
+
 ## Testing
 
 ### Local Testing

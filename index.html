@@ -2895,17 +2895,37 @@
             let coords = null;
 
             if (relationship === 'DSS Social Worker') {
+                // Smart location discovery for social workers: Try ZIP first (more precise), fallback to county centroid
+                const socialWorkerZip = document.getElementById('socialWorkerZip').value;
                 const socialWorkerCounty = document.getElementById('socialWorkerCounty').value;
-                if (!socialWorkerCounty) {
-                    alert('Please select the social worker\'s county first.');
+
+                if (!socialWorkerZip && !socialWorkerCounty) {
+                    alert('Please enter the social worker\'s ZIP code or select their county first.');
                     return;
                 }
-                coords = countyCoordinates[socialWorkerCounty];
+
+                // Strategy 1: Try ZIP code geocoding (more precise)
+                if (socialWorkerZip) {
+                    try {
+                        // Use ZIP with state for better geocoding accuracy
+                        const state = socialWorkerCounty && socialWorkerCounty.includes('SC') ? 'SC' : 'NC';
+                        coords = await geocodeAddress(`${socialWorkerZip}, ${state}`);
+                    } catch (error) {
+                        console.log('ZIP geocoding failed, will try county centroid fallback');
+                    }
+                }
+
+                // Strategy 2: Fallback to county centroid if ZIP didn't work
+                if (!coords && socialWorkerCounty) {
+                    coords = countyCoordinates[socialWorkerCounty];
+                }
+
                 if (!coords) {
-                    alert('County coordinates not found. Please contact support.');
+                    alert('Could not determine location from ZIP code or county. Please verify your information and try again.');
                     return;
                 }
             } else {
+                // For caregivers and others: Use full address geocoding
                 const street = document.getElementById('caregiverStreet').value;
                 const city = document.getElementById('caregiverCity').value;
                 const state = document.getElementById('caregiverState').value;
