@@ -136,6 +136,13 @@ curl -X POST http://localhost:3000/api/submit \
 - Easy to miss updating backend when adding frontend fields
 - Pattern: `if (formData.x) { requiredFields.push('y') }`
 
+### Life Box Special Handling
+- Life Box requests skip ALL caregiver validation (regardless of child age)
+- Backend checks: `const isLifeBox = formData.requestType === 'Life Box'`
+- Required fields: childPhone, childEmail
+- Auto-populates: childPlacementType = "Age 18 or more"
+- Function renamed from `checkLifeBox18Plus()` to `checkLifeBox()` to reflect all ages
+
 ### Database Schema Cache
 - Supabase caches schema - new columns may not be immediately available
 - Error message: "Could not find the 'column_name' column in the schema cache"
@@ -145,20 +152,29 @@ curl -X POST http://localhost:3000/api/submit \
 
 ### All Request Types (Base Fields)
 - Request Type, Relationship, Pickup Date/Time/Location
-- Caregiver: Name, contact, address
 - Social Worker: Name, contact, county
 - Child: Name, age, DOB, gender, ethnicity, placement type, custody county
+- **Exception:** Caregiver information NOT required for Life Box requests
 
 ### Bags of Hope
+- Caregiver: Name, contact, address
 - Clothing sizes: shirt, pants, socks/shoes, undergarments, diapers
 
 ### Shoes of Hope
+- Caregiver: Name, contact, address
 - Child grade in fall
 - Shoe gender → girl/boy shoe sizes
 - Underwear gender → girl/boy underwear sizes
 - Comments
 
+### Life Box
+- **NO Caregiver information required** (regardless of child's age)
+- Child contact: Phone number, email address (required)
+- Placement type auto-populated to "Age 18 or more"
+- Designed for youth transitioning out of foster care
+
 ### General Request
+- Caregiver: Name, contact, address
 - Sub-type: Bed, Bedding, Luggage, Car Seat, Stroller, High Chair, Pack & Play, Other
 - Bed reason (if sub-type is Bed)
 - Additional information

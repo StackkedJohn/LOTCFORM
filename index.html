@@ -1508,18 +1508,18 @@
                         </select>
                     </div>
 
-                    <!-- Life Box 18+ Youth Contact Information -->
+                    <!-- Life Box Contact Information -->
                     <div class="hidden" id="lifeBox18PlusSection">
                         <div class="form-group">
-                            <label class="required">Youth's Phone Number</label>
+                            <label class="required">Child's Phone Number</label>
                             <input type="tel" id="childPhone" name="childPhone" placeholder="(555) 555-5555" maxlength="10" pattern="[0-9]{10}">
-                            <small style="color: #666; display: block; margin-top: 4px;">Direct contact number for the youth (18 or older).</small>
+                            <small style="color: #666; display: block; margin-top: 4px;">Direct contact number for the child (required for Life Box requests).</small>
                         </div>
 
                         <div class="form-group">
-                            <label class="required">Youth's Email Address</label>
-                            <input type="email" id="childEmail" name="childEmail" placeholder="youth@example.com">
-                            <small style="color: #666; display: block; margin-top: 4px;">Email address for the youth (18 or older).</small>
+                            <label class="required">Child's Email Address</label>
+                            <input type="email" id="childEmail" name="childEmail" placeholder="child@example.com">
+                            <small style="color: #666; display: block; margin-top: 4px;">Email address for the child (required for Life Box requests).</small>
                         </div>
                     </div>
 
@@ -1823,52 +1823,39 @@
             }
         });
 
-        // Helper function to check and handle Life Box 18+ logic
-        function checkLifeBox18Plus() {
+        // Helper function to check and handle Life Box logic
+        function checkLifeBox() {
             const requestType = document.getElementById('requestType').value;
-            const childDOB = document.getElementById('childDOB').value;
             const caregiverSection = document.getElementById('caregiverSection');
-            const lifeBox18PlusSection = document.getElementById('lifeBox18PlusSection');
+            const lifeBoxContactSection = document.getElementById('lifeBox18PlusSection');
             const childPhone = document.getElementById('childPhone');
             const childEmail = document.getElementById('childEmail');
             const childPlacementType = document.getElementById('childPlacementType');
 
-            // Calculate age from DOB
-            let age = null;
-            if (childDOB) {
-                const dob = new Date(childDOB);
-                const today = new Date();
-                age = today.getFullYear() - dob.getFullYear();
-                const monthDiff = today.getMonth() - dob.getMonth();
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-                    age--;
-                }
-            }
-
-            // Check if Life Box AND age >= 18
-            if (requestType === 'Life Box' && age !== null && age >= 18) {
-                // Hide caregiver section
+            // Check if Life Box request type is selected
+            if (requestType === 'Life Box') {
+                // Hide caregiver section - not needed for Life Box requests
                 caregiverSection.classList.add('hidden');
 
-                // Show Life Box 18+ section
-                lifeBox18PlusSection.classList.remove('hidden');
+                // Show Life Box contact section (phone and email)
+                lifeBoxContactSection.classList.remove('hidden');
                 childPhone.required = true;
                 childEmail.required = true;
 
-                // Auto-populate placement type
+                // Auto-populate placement type to "Age 18 or more"
                 childPlacementType.value = 'Age 18 or more';
             } else {
-                // Show caregiver section
+                // Show caregiver section for all other request types
                 caregiverSection.classList.remove('hidden');
 
-                // Hide Life Box 18+ section
-                lifeBox18PlusSection.classList.add('hidden');
+                // Hide Life Box contact section
+                lifeBoxContactSection.classList.add('hidden');
                 childPhone.required = false;
                 childEmail.required = false;
                 childPhone.value = '';
                 childEmail.value = '';
 
-                // Clear auto-populated placement type if it was set
+                // Clear auto-populated placement type if it was set by Life Box
                 if (childPlacementType.value === 'Age 18 or more' && requestType !== 'Life Box') {
                     childPlacementType.value = '';
                 }
@@ -1903,7 +1890,7 @@
             }
 
             // Check Life Box 18+ conditions
-            checkLifeBox18Plus();
+            checkLifeBox();
         });
 
         // Relationship dropdown - auto-expand sections based on selection
@@ -2226,7 +2213,7 @@
             }
 
             // Check Life Box 18+ conditions
-            checkLifeBox18Plus();
+            checkLifeBox();
         });
 
         // Handle "Do you have caregiver info?" question (in Social Worker section)

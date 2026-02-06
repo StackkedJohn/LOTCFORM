@@ -45,8 +45,8 @@ app.post('/api/submit', async (req, res) => {
         // Get form data from request body
         const formData = req.body;
 
-        // Check if Life Box 18+ (no caregiver needed)
-        const isLifeBox18Plus = formData.requestType === 'Life Box' && parseInt(formData.childAge) >= 18;
+        // Check if Life Box (no caregiver needed for any Life Box request)
+        const isLifeBox = formData.requestType === 'Life Box';
 
         // Validate required fields - conditional based on checkbox
         const baseRequiredFields = [
@@ -59,8 +59,8 @@ app.post('/api/submit', async (req, res) => {
 
         let requiredFields = [...baseRequiredFields];
 
-        // Caregiver fields - NOT required for Life Box 18+
-        if (!isLifeBox18Plus) {
+        // Caregiver fields - NOT required for Life Box requests
+        if (!isLifeBox) {
             requiredFields.push('caregiverFirstName', 'caregiverLastName', 'caregiverStreet', 'caregiverZip',
                               'caregiverCity', 'caregiverState', 'caregiverCounty');
 
@@ -76,7 +76,7 @@ app.post('/api/submit', async (req, res) => {
                 requiredFields.push('caregiverEmail');
             }
         } else {
-            // Life Box 18+ - require youth contact info
+            // Life Box - require child contact info
             requiredFields.push('childPhone', 'childEmail');
         }
 
