@@ -1344,6 +1344,18 @@
                     <h2 class="section-title">Request Details</h2>
 
                     <div class="form-group">
+                        <label class="required">Estimated Pickup Date</label>
+                        <input type="date" id="pickupDate" name="pickupDate" required min="">
+                        <small style="color: #666; display: block; margin-top: 4px;">When do you plan to pick up the items?</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Estimated Pickup Time</label>
+                        <input type="time" id="pickupTime" name="pickupTime" required>
+                        <small style="color: #666; display: block; margin-top: 4px;">What time do you plan to arrive?</small>
+                    </div>
+
+                    <div class="form-group">
                         <label class="required">Completion Contact - Who should we contact when the request is ready?</label>
                         <select id="completionContact" name="completionContact" required>
                             <option value="">-- Select --</option>
@@ -1860,6 +1872,15 @@
                     childPlacementType.value = '';
                 }
             }
+        }
+
+        // Initialize pickup date with today's date as default and minimum
+        const pickupDateField = document.getElementById('pickupDate');
+        if (pickupDateField) {
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+            pickupDateField.value = todayStr;
+            pickupDateField.min = todayStr;
         }
 
         // Child age auto-calculation from date of birth
