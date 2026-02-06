@@ -3043,11 +3043,11 @@
         document.getElementById('completionContact').addEventListener('change', function() {
             const openMapBtn = document.getElementById('openMapBtn');
 
-            if (this.value === 'Caregiver') {
-                // Show the map button
+            if (this.value === 'Caregiver' || this.value === 'DSS Social Worker') {
+                // Show the map button for caregivers and social workers
                 openMapBtn.classList.remove('hidden');
             } else {
-                // Hide the map button
+                // Hide the map button for other contact types
                 openMapBtn.classList.add('hidden');
             }
         });
