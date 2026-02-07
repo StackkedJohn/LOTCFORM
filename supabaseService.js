@@ -141,8 +141,6 @@ class SupabaseService {
 
                 // Pickup information
                 completion_contact: data.completionContact,
-                pickup_date: data.pickupDate,
-                pickup_time: data.pickupTime,
                 pickup_location: data.pickupLocation,
 
                 // Child information

@@ -1344,18 +1344,6 @@
                     <h2 class="section-title">Request Details</h2>
 
                     <div class="form-group">
-                        <label class="required">Estimated Pickup Date</label>
-                        <input type="date" id="pickupDate" name="pickupDate" required min="">
-                        <small style="color: #666; display: block; margin-top: 4px;">When do you plan to pick up the items?</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="required">Estimated Pickup Time</label>
-                        <input type="time" id="pickupTime" name="pickupTime" required>
-                        <small style="color: #666; display: block; margin-top: 4px;">What time do you plan to arrive?</small>
-                    </div>
-
-                    <div class="form-group">
                         <label class="required">Completion Contact - Who should we contact when the request is ready?</label>
                         <select id="completionContact" name="completionContact" required>
                             <option value="">-- Select --</option>
@@ -1872,15 +1860,6 @@
                     childPlacementType.value = '';
                 }
             }
-        }
-
-        // Initialize pickup date with today's date as default and minimum
-        const pickupDateField = document.getElementById('pickupDate');
-        if (pickupDateField) {
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-            pickupDateField.value = todayStr;
-            pickupDateField.min = todayStr;
         }
 
         // Child age auto-calculation from date of birth
@@ -2409,232 +2388,6 @@
         ];
 
         // Function to format time in 12-hour format
-        function formatTime12Hour(hour, minute) {
-            const period = hour >= 12 ? 'PM' : 'AM';
-            const hour12 = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
-            return `${hour12}:${String(minute).padStart(2, '0')} ${period}`;
-        }
-
-        // Enhanced function to get location status with detailed information
-        // targetDate: Date object (optional, defaults to current time)
-        function getLocationStatus(hoursString, targetDate = null) {
-            // Use provided target date or current time
-            const checkDate = targetDate || new Date();
-
-            // Get time in Eastern Time (North Carolina timezone)
-            const options = { timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', hour12: false, weekday: 'short' };
-            const formatter = new Intl.DateTimeFormat('en-US', options);
-            const parts = formatter.formatToParts(checkDate);
-
-            const currentDay = parts.find(p => p.type === 'weekday').value;
-            const currentHour = parseInt(parts.find(p => p.type === 'hour').value);
-            const currentMinute = parseInt(parts.find(p => p.type === 'minute').value);
-            const currentTime = currentHour * 60 + currentMinute; // Convert to minutes since midnight
-
-            // Map day abbreviations
-            const dayMap = {
-                'Mon': ['Mon', 'Monday', 'M'],
-                'Tue': ['Tue', 'Tuesday', 'Tu'],
-                'Wed': ['Wed', 'Wednesday', 'W'],
-                'Thu': ['Thu', 'Thursday', 'Th'],
-                'Fri': ['Fri', 'Friday', 'F'],
-                'Sat': ['Sat', 'Saturday'],
-                'Sun': ['Sun', 'Sunday']
-            };
-
-            const dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const currentDayIdx = dayOrder.indexOf(currentDay);
-
-            // Parse all segments into structured data
-            const segments = hoursString.split(';').map(s => s.trim());
-            const schedule = [];
-
-            for (const segment of segments) {
-                // Skip closed segments for now, we'll handle them separately
-                if (segment.toLowerCase().includes('closed')) {
-                    const closedDays = segment.match(/(\w+).*closed/i);
-                    if (closedDays) {
-                        const dayPart = closedDays[1];
-                        for (const [standardDay, variations] of Object.entries(dayMap)) {
-                            if (variations.some(v => dayPart.includes(v))) {
-                                schedule.push({ days: [standardDay], isClosed: true });
-                            }
-                        }
-                    }
-                    continue;
-                }
-
-                // Parse time range
-                const timeMatch = segment.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?.*?(?:–|-|to)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-                if (!timeMatch) continue;
-
-                let openHour = parseInt(timeMatch[1]);
-                const openMin = parseInt(timeMatch[2] || 0);
-                const openPeriod = timeMatch[3] ? timeMatch[3].toLowerCase() : null;
-
-                let closeHour = parseInt(timeMatch[4]);
-                const closeMin = parseInt(timeMatch[5] || 0);
-                const closePeriod = timeMatch[6] ? timeMatch[6].toLowerCase() : null;
-
-                // Convert to 24-hour format
-                if (openPeriod === 'pm' && openHour !== 12) openHour += 12;
-                if (openPeriod === 'am' && openHour === 12) openHour = 0;
-                if (closePeriod === 'pm' && closeHour !== 12) closeHour += 12;
-                if (closePeriod === 'am' && closeHour === 12) closeHour = 0;
-
-                if (!openPeriod && openHour >= 8 && openHour < 12) {
-                    // Leave as is (AM)
-                } else if (!openPeriod && openHour >= 1 && openHour <= 7) {
-                    openHour += 12;
-                }
-
-                if (!closePeriod && closeHour >= 1 && closeHour <= 11) {
-                    closeHour += 12;
-                }
-
-                const openTime = openHour * 60 + openMin;
-                const closeTime = closeHour * 60 + closeMin;
-
-                // Determine which days this applies to
-                let applicableDays = [];
-
-                // Check for day range (M-F, M-Th, etc.)
-                const rangeMatch = segment.match(/([A-Za-z]+)-([A-Za-z]+)/);
-                if (rangeMatch) {
-                    const startDay = rangeMatch[1];
-                    const endDay = rangeMatch[2];
-                    let startIdx = -1, endIdx = -1;
-
-                    for (let i = 0; i < dayOrder.length; i++) {
-                        if (dayMap[dayOrder[i]].some(v => startDay.includes(v) || v.includes(startDay))) {
-                            startIdx = i;
-                        }
-                        if (dayMap[dayOrder[i]].some(v => endDay.includes(v) || v.includes(endDay))) {
-                            endIdx = i;
-                        }
-                    }
-
-                    if (startIdx !== -1 && endIdx !== -1) {
-                        for (let i = startIdx; i <= endIdx; i++) {
-                            applicableDays.push(dayOrder[i]);
-                        }
-                    }
-                } else {
-                    // Check individual days
-                    for (const [standardDay, variations] of Object.entries(dayMap)) {
-                        for (const variation of variations) {
-                            if (segment.match(new RegExp(`(?:^|,\\s*)${variation}(?![a-z])`, 'i'))) {
-                                applicableDays.push(standardDay);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (applicableDays.length > 0) {
-                    schedule.push({
-                        days: applicableDays,
-                        openTime,
-                        closeTime,
-                        openHour,
-                        openMin,
-                        closeHour,
-                        closeMin
-                    });
-                }
-            }
-
-            // Check current day's status
-            let todaySchedule = schedule.find(s => s.days.includes(currentDay) && !s.isClosed);
-
-            if (todaySchedule) {
-                const openTime = todaySchedule.openTime;
-                const closeTime = todaySchedule.closeTime;
-                const minutesUntilClose = closeTime - currentTime;
-
-                // Check if currently open
-                if (currentTime >= openTime && currentTime < closeTime) {
-                    // Check if closing soon (within 30 minutes)
-                    if (minutesUntilClose <= 30 && minutesUntilClose > 0) {
-                        return {
-                            isOpen: true,
-                            status: 'closing_soon',
-                            closingTime: formatTime12Hour(todaySchedule.closeHour, todaySchedule.closeMin),
-                            minutesUntilClose
-                        };
-                    }
-                    return {
-                        isOpen: true,
-                        status: 'open',
-                        closingTime: formatTime12Hour(todaySchedule.closeHour, todaySchedule.closeMin)
-                    };
-                }
-
-                // Check if opens later today
-                if (currentTime < openTime) {
-                    return {
-                        isOpen: false,
-                        status: 'closed',
-                        opensToday: true,
-                        openingTime: formatTime12Hour(todaySchedule.openHour, todaySchedule.openMin)
-                    };
-                }
-            }
-
-            // Find next opening day
-            for (let i = 1; i <= 7; i++) {
-                const nextDayIdx = (currentDayIdx + i) % 7;
-                const nextDay = dayOrder[nextDayIdx];
-                const nextSchedule = schedule.find(s => s.days.includes(nextDay) && !s.isClosed);
-
-                if (nextSchedule) {
-                    const dayName = i === 1 ? 'tomorrow' : nextDay;
-                    return {
-                        isOpen: false,
-                        status: 'closed',
-                        opensToday: false,
-                        openingTime: formatTime12Hour(nextSchedule.openHour, nextSchedule.openMin),
-                        openingDay: dayName
-                    };
-                }
-            }
-
-            // Default: closed with no next opening found
-            return {
-                isOpen: false,
-                status: 'closed',
-                opensToday: false
-            };
-        }
-
-        // Backward compatibility wrapper
-        function isLocationOpen(hoursString, targetDate = null) {
-            return getLocationStatus(hoursString, targetDate).isOpen;
-        }
-
-        // Get status badge HTML for location with enhanced information
-        function getStatusBadge(statusInfo) {
-            // Handle both old boolean format and new object format
-            if (typeof statusInfo === 'boolean') {
-                const legacyStatus = getLocationStatus('');
-                legacyStatus.isOpen = statusInfo;
-                legacyStatus.status = statusInfo ? 'open' : 'closed';
-                statusInfo = legacyStatus;
-            }
-
-            if (statusInfo.status === 'closing_soon') {
-                return '<span style="display: inline-block; background-color: #f59e0b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-left: 8px;">CLOSING SOON</span>';
-            } else if (statusInfo.isOpen) {
-                return '<span style="display: inline-block; background-color: #10b981; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-left: 8px;">OPEN</span>';
-            } else if (statusInfo.opensToday && statusInfo.openingTime) {
-                return `<span style="display: inline-block; background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-left: 8px;">CLOSED</span><span style="display: inline-block; color: #666; padding: 2px 8px; font-size: 0.85em; margin-left: 4px;">Opens at ${statusInfo.openingTime}</span>`;
-            } else if (statusInfo.openingTime && statusInfo.openingDay) {
-                return `<span style="display: inline-block; background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-left: 8px;">CLOSED</span><span style="display: inline-block; color: #666; padding: 2px 8px; font-size: 0.85em; margin-left: 4px;">Opens ${statusInfo.openingDay} at ${statusInfo.openingTime}</span>`;
-            } else {
-                return '<span style="display: inline-block; background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.85em; font-weight: 600; margin-left: 8px;">CLOSED</span>';
-            }
-        }
-
         // Map variables
         let map = null;
         let userMarker = null;
@@ -2678,44 +2431,13 @@
         function initializeMap(userLng, userLat) {
             userCoords = [userLng, userLat];
 
-            // Get the user's selected pickup date and time
-            const pickupDateInput = document.getElementById('pickupDate').value;
-            const pickupTimeInput = document.getElementById('pickupTime').value;
+            // Calculate distances and sort by nearest
+            const locationsWithDistance = pickupLocations.map(loc => ({
+                ...loc,
+                distance: calculateDistance(userLat, userLng, loc.coords[1], loc.coords[0])
+            })).sort((a, b) => a.distance - b.distance);
 
-            // Create a target Date object from the user's selection
-            let targetDate = null;
-            if (pickupDateInput && pickupTimeInput) {
-                // Combine date and time into a Date object
-                // The input values are in format: "YYYY-MM-DD" and "HH:MM"
-                targetDate = new Date(`${pickupDateInput}T${pickupTimeInput}:00`);
-                console.log('Checking location status for pickup time:', targetDate);
-            } else {
-                console.warn('No pickup date/time selected, using current time as fallback');
-            }
-
-            // Calculate distances, check open status, and sort locations
-            const locationsWithDistance = pickupLocations.map(loc => {
-                const statusInfo = getLocationStatus(loc.hours, targetDate);
-                return {
-                    ...loc,
-                    distance: calculateDistance(userLat, userLng, loc.coords[1], loc.coords[0]),
-                    isOpen: statusInfo.isOpen,
-                    statusInfo: statusInfo
-                };
-            }).sort((a, b) => {
-                // Sort by open status first (open/closing_soon first), then by distance
-                if (a.isOpen !== b.isOpen) {
-                    return b.isOpen - a.isOpen; // true (1) comes before false (0)
-                }
-                return a.distance - b.distance;
-            });
-
-            // Check nearest location status for smart messaging
-            const nearestLocation = locationsWithDistance[0];
-            const nearestOpen = locationsWithDistance.find(loc => loc.isOpen);
-            const allClosed = !nearestOpen;
-
-            // Take top 5 closest locations (prioritizing open ones)
+            // Take top 5 closest locations
             const top5Locations = locationsWithDistance.slice(0, 5);
 
             // Create the map
@@ -2754,7 +2476,7 @@
                     const marker = new mapboxgl.Marker(el)
                         .setLngLat(loc.coords)
                         .setPopup(new mapboxgl.Popup({ offset: 25 })
-                            .setHTML(`<h4>${loc.name} ${getStatusBadge(loc.statusInfo)}</h4><p>${loc.address}</p><p style="margin-top: 6px;"><strong>Hours:</strong> ${loc.hours}</p><p style="color: #c22035; font-weight: 600;">${loc.distance.toFixed(1)} miles away</p>`))
+                            .setHTML(`<h4>${loc.name}</h4><p>${loc.address}</p><p style="margin-top: 6px;"><strong>Hours:</strong> ${loc.hours}</p><p style="color: #c22035; font-weight: 600;">${loc.distance.toFixed(1)} miles away</p>`))
                         .addTo(map);
 
                     el.addEventListener('click', () => {
@@ -2772,88 +2494,29 @@
             });
 
             // Populate sidebar with top 5 locations
-            populateLocationsList(top5Locations, nearestLocation, nearestOpen, allClosed, targetDate);
+            populateLocationsList(top5Locations);
         }
 
-        // Populate the locations sidebar
-        function populateLocationsList(locations, nearestLocation, nearestOpen, allClosed, targetDate) {
+        // Populate the locations sidebar (uses only controlled internal data from pickupLocations array)
+        function populateLocationsList(locations) {
             const listContainer = document.getElementById('locationsList');
             listContainer.innerHTML = '';
 
-            // Format the selected pickup time for display
-            let pickupTimeText = '';
-            if (targetDate) {
-                const options = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
-                pickupTimeText = targetDate.toLocaleString('en-US', options);
+            // Add nearest location message
+            if (locations.length > 0) {
+                const nearest = locations[0];
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = 'padding: 12px; margin-bottom: 12px; border-radius: 8px; font-size: 0.95em; line-height: 1.5; background-color: #f0fdf4; border: 2px solid #86efac; color: #166534;';
+                messageDiv.innerHTML = '<strong>📍 Nearest Location</strong><br>The nearest location is <strong>' + nearest.name + '</strong> (' + nearest.distance.toFixed(1) + ' mi away).';
+                listContainer.appendChild(messageDiv);
             }
 
-            // Add smart recommendation message
-            const messageDiv = document.createElement('div');
-            messageDiv.style.cssText = 'padding: 12px; margin-bottom: 12px; border-radius: 8px; font-size: 0.95em; line-height: 1.5;';
-
-            if (allClosed) {
-                messageDiv.style.backgroundColor = '#fef2f2';
-                messageDiv.style.border = '2px solid #fca5a5';
-                messageDiv.style.color = '#991b1b';
-                const nextOpenInfo = nearestLocation.statusInfo.openingTime
-                    ? `<br><small>Opens ${nearestLocation.statusInfo.opensToday ? 'that day' : nearestLocation.statusInfo.openingDay} at ${nearestLocation.statusInfo.openingTime}</small>`
-                    : '';
-                messageDiv.innerHTML = `
-                    <strong>⚠️ All locations closed at your pickup time</strong><br>
-                    ${pickupTimeText ? `<small style="color: #666;">For pickup on: ${pickupTimeText}</small><br>` : ''}
-                    The nearest location is <strong>${nearestLocation.name}</strong> (${nearestLocation.distance.toFixed(1)} mi away).${nextOpenInfo}<br>
-                    Please adjust your pickup time or check the hours below.
-                `;
-            } else if (!nearestLocation.isOpen && nearestOpen) {
-                messageDiv.style.backgroundColor = '#fffbeb';
-                messageDiv.style.border = '2px solid #fcd34d';
-                messageDiv.style.color = '#92400e';
-                const closedOpenInfo = nearestLocation.statusInfo.openingTime
-                    ? `<br><small>Opens ${nearestLocation.statusInfo.opensToday ? 'that day' : nearestLocation.statusInfo.openingDay} at ${nearestLocation.statusInfo.openingTime}</small>`
-                    : '';
-                const closingSoonWarning = nearestOpen.statusInfo.status === 'closing_soon'
-                    ? `<br><small style="color: #f59e0b; font-weight: 600;">⚠️ Note: This location closes in ${nearestOpen.statusInfo.minutesUntilClose} minutes from your pickup time!</small>`
-                    : '';
-                messageDiv.innerHTML = `
-                    <strong>📍 Nearest Location Update</strong><br>
-                    ${pickupTimeText ? `<small style="color: #666;">For pickup on: ${pickupTimeText}</small><br>` : ''}
-                    The closest location (<strong>${nearestLocation.name}</strong>, ${nearestLocation.distance.toFixed(1)} mi) will be closed.${closedOpenInfo}<br>
-                    The nearest <strong>OPEN</strong> location is <strong>${nearestOpen.name}</strong> (${nearestOpen.distance.toFixed(1)} mi away).${closingSoonWarning}
-                `;
-            } else if (nearestLocation.isOpen) {
-                const closingSoonWarning = nearestLocation.statusInfo.status === 'closing_soon'
-                    ? `<br><span style="color: #f59e0b; font-weight: 600;">⚠️ Will close in ${nearestLocation.statusInfo.minutesUntilClose} minutes from your pickup time at ${nearestLocation.statusInfo.closingTime}!</span>`
-                    : '';
-                messageDiv.style.backgroundColor = nearestLocation.statusInfo.status === 'closing_soon' ? '#fffbeb' : '#f0fdf4';
-                messageDiv.style.border = nearestLocation.statusInfo.status === 'closing_soon' ? '2px solid #fcd34d' : '2px solid #86efac';
-                messageDiv.style.color = nearestLocation.statusInfo.status === 'closing_soon' ? '#92400e' : '#166534';
-                messageDiv.innerHTML = `
-                    <strong>${nearestLocation.statusInfo.status === 'closing_soon' ? '⚠️ Hurry!' : '✅ Great news!'}</strong><br>
-                    ${pickupTimeText ? `<small style="color: #666;">For pickup on: ${pickupTimeText}</small><br>` : ''}
-                    The nearest location (<strong>${nearestLocation.name}</strong>, ${nearestLocation.distance.toFixed(1)} mi away) will be <strong>OPEN</strong>!${closingSoonWarning}
-                `;
-            }
-
-            listContainer.appendChild(messageDiv);
-
-            // Add location items
+            // Add location items (data sourced from internal pickupLocations array, not user input)
             locations.forEach((loc, index) => {
                 const item = document.createElement('div');
                 item.className = 'location-item';
                 item.dataset.locationId = loc.id;
-                // Note: Using innerHTML with controlled internal data (pickupLocations array)
-                item.innerHTML = `
-                    <div class="location-item-header">
-                        <span class="location-rank">${index + 1}</span>
-                        <span class="location-name">${loc.name} ${getStatusBadge(loc.statusInfo)}</span>
-                    </div>
-                    <div class="location-address">${loc.address}</div>
-                    <div class="location-distance">${loc.distance.toFixed(1)} miles away</div>
-                    <div class="location-hours" style="margin-top: 6px; color: #666; font-size: 0.9em;">
-                        <strong>Hours:</strong> ${loc.hours}
-                        ${loc.statusInfo.status === 'closing_soon' ? `<br><span style="color: #f59e0b; font-weight: 600;">⚠️ Closes in ${loc.statusInfo.minutesUntilClose} minutes!</span>` : ''}
-                    </div>
-                `;
+                item.innerHTML = '<div class="location-item-header"><span class="location-rank">' + (index + 1) + '</span><span class="location-name">' + loc.name + '</span></div><div class="location-address">' + loc.address + '</div><div class="location-distance">' + loc.distance.toFixed(1) + ' miles away</div><div class="location-hours" style="margin-top: 6px; color: #666; font-size: 0.9em;"><strong>Hours:</strong> ' + loc.hours + '</div>';
                 item.addEventListener('click', () => selectLocation(loc));
                 listContainer.appendChild(item);
             });
@@ -2904,13 +2567,6 @@
         // Open the map modal
         async function openMapModal() {
             const modal = document.getElementById('mapModal');
-            const pickupDate = document.getElementById('pickupDate').value;
-            const pickupTime = document.getElementById('pickupTime').value;
-
-            if (!pickupDate || !pickupTime) {
-                alert('Please select your estimated pickup date and time first.');
-                return;
-            }
 
             const relationship = document.getElementById('relationship').value;
             let coords = null;
@@ -3019,7 +2675,7 @@
                 const locationAddress = document.getElementById('locationAddress');
                 const locationHours = document.getElementById('locationHours');
                 locationAddress.textContent = selectedLocation.address;
-                locationHours.innerHTML = `${selectedLocation.hours} ${getStatusBadge(selectedLocation.statusInfo)}`;
+                locationHours.textContent = selectedLocation.hours;
                 locationDetails.style.display = 'block';
 
                 closeMapModal();
@@ -3038,20 +2694,9 @@
                 const location = pickupLocations.find(loc => loc.name === selectedValue);
 
                 if (location) {
-                    // Get the user's selected pickup date and time
-                    const pickupDateInput = document.getElementById('pickupDate').value;
-                    const pickupTimeInput = document.getElementById('pickupTime').value;
-
-                    let targetDate = null;
-                    if (pickupDateInput && pickupTimeInput) {
-                        targetDate = new Date(`${pickupDateInput}T${pickupTimeInput}:00`);
-                    }
-
-                    const statusInfo = getLocationStatus(location.hours, targetDate);
-
-                    // Update the display with address, hours, and status
-                    locationAddress.innerHTML = location.address;
-                    locationHours.innerHTML = `${location.hours} ${getStatusBadge(statusInfo)}`;
+                    // Update the display with address and hours
+                    locationAddress.textContent = location.address;
+                    locationHours.textContent = location.hours;
                     locationDetails.style.display = 'block';
                 }
             } else {
@@ -3086,25 +2731,6 @@
             }
         });
 
-        // Set default and minimum date for pickup date field
-        const pickupDateInput = document.getElementById('pickupDate');
-        const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-        pickupDateInput.min = todayStr;
-        pickupDateInput.value = todayStr; // Default to today
-
-        // Event listeners for pickup date/time changes
-        // Update location status when user changes their pickup time
-        function updateLocationStatus() {
-            const pickupLocation = document.getElementById('pickupLocation');
-            if (pickupLocation.value) {
-                // Trigger change event to refresh status
-                pickupLocation.dispatchEvent(new Event('change'));
-            }
-        }
-
-        document.getElementById('pickupDate').addEventListener('change', updateLocationStatus);
-        document.getElementById('pickupTime').addEventListener('change', updateLocationStatus);
     </script>
 </body>
 </html>

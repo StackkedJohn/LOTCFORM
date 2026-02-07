@@ -52,7 +52,7 @@ app.post('/api/submit', async (req, res) => {
         const baseRequiredFields = [
             'requestType', 'relationship',
             'socialWorkerFirstName', 'socialWorkerLastName', 'socialWorkerEmail', 'socialWorkerCounty',
-            'completionContact', 'pickupDate', 'pickupTime', 'pickupLocation', 'childFirstName', 'childLastName',
+            'completionContact', 'pickupLocation', 'childFirstName', 'childLastName',
             'childPlacementType', 'childGender', 'childAge', 'childDOB', 'childEthnicity',
             'isLicensedFoster', 'agreeToTerms'
         ];
